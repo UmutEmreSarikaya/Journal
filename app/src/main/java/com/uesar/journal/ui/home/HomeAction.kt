@@ -1,4 +1,4 @@
-package com.uesar.journal.ui
+package com.uesar.journal.ui.home
 
 sealed interface HomeAction {
     data object AddEntryClicked : HomeAction
