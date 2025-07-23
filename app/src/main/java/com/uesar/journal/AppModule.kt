@@ -8,4 +8,6 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::NewEntryViewModel)
+    single<RecordingManager> { RecordingManagerImpl() }
+    single { Counter() }
 }
