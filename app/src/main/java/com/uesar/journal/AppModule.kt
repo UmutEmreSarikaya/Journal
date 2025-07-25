@@ -9,5 +9,4 @@ val appModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::NewEntryViewModel)
     single<RecordingManager> { RecordingManagerImpl() }
-    single { Counter() }
 }
