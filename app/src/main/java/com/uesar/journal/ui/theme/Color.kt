@@ -107,3 +107,4 @@ val ButtonGradient = Brush.linearGradient(
 val ButtonPressedGradient = Brush.linearGradient(
     colors = listOf(Color(0xFF578CFF), Color(0xFF0057CC))
 )
+val DisabledButtonColor = Brush.linearGradient(colors = listOf(SurfaceVariant, SurfaceVariant))
