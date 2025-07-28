@@ -1,6 +1,7 @@
 package com.uesar.journal.ui.newentry
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +43,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 
 fun NewEntryScreenRoot(
-    viewModel: NewEntryViewModel = koinViewModel(),
-    navigateBack: () -> Unit
+    viewModel: NewEntryViewModel = koinViewModel(), navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     NewEntryScreen(
@@ -71,8 +73,7 @@ private fun NewEntryScreen(
         }, navigationIcon = {
             IconButton(onClick = { onAction(NewEntryAction.NavigateBack) }) {
                 Icon(
-                    painter = painterResource(R.drawable.navigate_before),
-                    contentDescription = null
+                    painter = painterResource(R.drawable.navigate_before), contentDescription = null
                 )
             }
         })
@@ -83,8 +84,7 @@ private fun NewEntryScreen(
                 .padding(horizontal = standardPadding)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     modifier = Modifier
@@ -107,28 +107,35 @@ private fun NewEntryScreen(
                     )
                 )
             }
+
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier, verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .background(Color.Red)
+                        .size(height = 10.dp, width = 100.dp)
                 )
-                IconButton(
-                    modifier = Modifier,
-                    onClick = {}
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .shadow(elevation = 10.dp, shape = CircleShape)
+                        .background(Color.White, CircleShape)
+                        .clickable { onAction(NewEntryAction.OnAITranscribeButtonClicked) },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
+                        modifier = Modifier,
                         painter = painterResource(R.drawable.ai),
                         contentDescription = null,
+                        tint = Color.Black
                     )
                 }
             }
 
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
-                    sheetState = sheetState,
-                    onDismissRequest = {
+                    sheetState = sheetState, onDismissRequest = {
                         onAction(NewEntryAction.BottomSheetClosed)
                         onAction(NewEntryAction.OnCancelMoodBottomSheet)
                     }) {

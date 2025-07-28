@@ -37,6 +37,10 @@ class NewEntryViewModel : ViewModel() {
                 _state.update { it.copy(currentSelectedMoodInBottomSheet = state.value.selectedMood) }
             }
 
+            is NewEntryAction.OnAITranscribeButtonClicked -> {
+
+            }
+
             else -> Unit
         }
     }

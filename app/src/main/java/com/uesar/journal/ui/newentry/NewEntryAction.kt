@@ -10,4 +10,5 @@ sealed interface NewEntryAction {
     data object BottomSheetClosed : NewEntryAction
     data object OnChangeMoodClicked : NewEntryAction
     data object OnCancelMoodBottomSheet : NewEntryAction
+    data object OnAITranscribeButtonClicked : NewEntryAction
 }
