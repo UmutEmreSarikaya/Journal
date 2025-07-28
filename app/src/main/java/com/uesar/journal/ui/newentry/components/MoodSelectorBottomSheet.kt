@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.uesar.journal.Mood
 import com.uesar.journal.R
 import com.uesar.journal.moods
+import com.uesar.journal.ui.components.MoodIcon
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.OnPrimary
 import com.uesar.journal.ui.theme.Primary

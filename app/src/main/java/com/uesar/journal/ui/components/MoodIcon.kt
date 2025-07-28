@@ -1,4 +1,4 @@
-package com.uesar.journal.ui.newentry.components
+package com.uesar.journal.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
