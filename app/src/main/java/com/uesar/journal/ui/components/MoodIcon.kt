@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
+import com.uesar.journal.ui.theme.JournalTheme
 
 @Composable
 fun MoodIcon(@DrawableRes moodIcon: Int, name: String, onMoodClicked: () -> Unit = {}) {
@@ -41,5 +42,7 @@ fun MoodIcon(@DrawableRes moodIcon: Int, name: String, onMoodClicked: () -> Unit
 @Preview(showBackground = true)
 @Composable
 private fun MoodIconPreview() {
-    MoodIcon(R.drawable.sad, "Sad")
+    JournalTheme {
+        MoodIcon(R.drawable.sad, "Sad")
+    }
 }
