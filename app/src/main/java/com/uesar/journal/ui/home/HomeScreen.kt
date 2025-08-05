@@ -1,10 +1,10 @@
 package com.uesar.journal.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.lazy.items
 import com.uesar.journal.R
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
+import com.uesar.journal.ui.home.components.JournalEntryRow
 import com.uesar.journal.ui.home.components.NoEntries
+import com.uesar.journal.ui.theme.standardPadding
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -85,14 +87,30 @@ private fun HomeScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .padding(standardPadding)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = if (state.journalEntries.isEmpty()) Arrangement.Center else Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.journalEntries.isEmpty()) {
                 NoEntries()
             } else {
-                Text("Entries: ${state.entryCount}")
+                LazyColumn {
+                    items(state.journalEntries) { entry ->
+                        JournalEntryRow(
+                            title = entry.title,
+                            topics = entry.topics,
+                            description = entry.description
+                        )
+                    }
+                }
+                state.journalEntries.forEach {
+                    JournalEntryRow(
+                        title = it.title,
+                        topics = it.topics,
+                        description = it.description
+                    )
+                }
             }
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(

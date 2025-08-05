@@ -3,8 +3,8 @@ package com.uesar.journal.ui.home
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uesar.journal.RecordingManager
 import com.uesar.journal.AudioRecorder
+import com.uesar.journal.domain.JournalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.update
 import java.util.Locale
 
 class HomeViewModel(
-    private val recordingManager: RecordingManager,
     private val audioRecorder: AudioRecorder,
+    private val repository: JournalRepository,
     private val application: Application,
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
@@ -24,6 +24,10 @@ class HomeViewModel(
     init {
         audioRecorder.trackingTime.onEach { time ->
             _state.update { it.copy(recordingTime = formatCounter(time)) }
+        }.launchIn(viewModelScope)
+
+        repository.getJournalEntries().onEach{ entries ->
+            _state.update { it.copy(journalEntries = entries) }
         }.launchIn(viewModelScope)
     }
 
