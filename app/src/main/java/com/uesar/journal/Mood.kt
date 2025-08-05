@@ -1,7 +1,9 @@
 package com.uesar.journal
 
 import androidx.annotation.DrawableRes
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Mood(
     @DrawableRes val icon: Int,
     @DrawableRes val emptyIcon: Int,
