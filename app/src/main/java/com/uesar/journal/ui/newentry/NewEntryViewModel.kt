@@ -13,10 +13,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 
-class NewEntryViewModel(private val repository: JournalRepository, private val audioPlayer: AudioPlayer) : ViewModel() {
+class NewEntryViewModel(
+    private val repository: JournalRepository,
+    private val application: Application,
+    private val audioPlayer: AudioPlayer
+) : ViewModel() {
     private val _state = MutableStateFlow(NewEntryState())
     val state: StateFlow<NewEntryState> = _state.asStateFlow()
-
 
     fun onAction(action: NewEntryAction) {
         when (action) {
@@ -124,5 +127,9 @@ class NewEntryViewModel(private val repository: JournalRepository, private val a
                 //No implementation here
             }
         }
+    }
+
+    fun setAudioPath(audioPath: String) {
+        _state.update { it.copy(audioPath = audioPath) }
     }
 }

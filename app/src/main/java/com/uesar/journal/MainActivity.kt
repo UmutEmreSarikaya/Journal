@@ -15,6 +15,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.uesar.journal.ui.Route
 import com.uesar.journal.ui.home.HomeScreenRoot
 import com.uesar.journal.ui.home.HomeViewModel
@@ -55,11 +56,19 @@ private fun AppNavigation() {
     NavHost(modifier = Modifier, navController = navController, startDestination = Route.Home) {
         composable<Route.Home> {
             val homeViewModel = koinViewModel<HomeViewModel>()
-            HomeScreenRoot(viewModel = homeViewModel, navigateToNewEntry = {navController.navigate(Route.NewEntry)}, navigateToSettings = {})
+            HomeScreenRoot(
+                viewModel = homeViewModel,
+                navigateToNewEntry = { audioPath -> navController.navigate(Route.NewEntry(audioPath)) },
+                navigateToSettings = {})
         }
-        composable<Route.NewEntry> {
+        composable<Route.NewEntry> { backStackEntry ->
+            val newEntryRoute = backStackEntry.toRoute<Route.NewEntry>()
+            val audioPath = newEntryRoute.audioPath
             val newEntryViewModel = koinViewModel<NewEntryViewModel>()
-            NewEntryScreenRoot(viewModel = newEntryViewModel, navigateBack = {navController.popBackStack()})
+            NewEntryScreenRoot(
+                viewModel = newEntryViewModel,
+                audioPath = audioPath,
+                navigateBack = { navController.popBackStack() })
         }
     }
 }

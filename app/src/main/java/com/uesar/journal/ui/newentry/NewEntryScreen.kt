@@ -38,6 +38,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,9 +69,14 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 
 fun NewEntryScreenRoot(
-    viewModel: NewEntryViewModel = koinViewModel(), navigateBack: () -> Unit
+    viewModel: NewEntryViewModel = koinViewModel(), audioPath: String, navigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        viewModel.setAudioPath(audioPath)
+    }
+
     NewEntryScreen(
         state = state, onAction = { action ->
             when (action) {

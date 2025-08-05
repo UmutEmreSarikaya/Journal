@@ -15,7 +15,7 @@ import java.io.FileOutputStream
 
 class AudioRecorderImpl : AudioRecorder {
     private var mediaRecorder: MediaRecorder? = null
-    private var outputFile: File? = null
+    override var outputFile: File? = null
     private var durationJob: Job? = null
     private var isRecording = false
     private var isPaused = false

@@ -5,6 +5,7 @@ import com.uesar.journal.Mood
 data class NewEntryState(
     val title: String = "",
     val isPlaying: Boolean = false,
+    val audioPath: String = "",
     val topicText: String = "",
     val description: String = "",
     val topics: List<String> = emptyList(),

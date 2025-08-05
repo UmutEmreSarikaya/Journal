@@ -1,7 +1,6 @@
 package com.uesar.journal.ui.home
 
 sealed interface HomeAction {
-    data object NavigateToNewEntry : HomeAction
     data object SettingsClicked : HomeAction
     data object BottomSheetOpened: HomeAction
     data object BottomSheetClosed: HomeAction

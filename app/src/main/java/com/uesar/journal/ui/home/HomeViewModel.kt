@@ -5,21 +5,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import java.util.Locale
 
 class HomeViewModel(
     private val audioRecorder: AudioRecorder,
-    private val repository: JournalRepository,
     private val application: Application,
+    repository: JournalRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
+    private val eventChannel = Channel<HomeEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     init {
         audioRecorder.trackingTime.onEach { time ->
@@ -64,6 +68,7 @@ class HomeViewModel(
             is HomeAction.SaveRecording -> {
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.stopRecording()
+                eventChannel.trySend(HomeEvent.AudioRecorded(audioRecorder.outputFile?.name ?: ""))
             }
 
             else -> Unit

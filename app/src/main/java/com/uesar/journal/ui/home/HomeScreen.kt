@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.lazy.items
 import com.uesar.journal.R
+import com.uesar.journal.ui.ObserveAsEvents
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
 import com.uesar.journal.ui.home.components.JournalEntryRow
 import com.uesar.journal.ui.home.components.NoEntries
@@ -34,19 +35,23 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreenRoot(
     viewModel: HomeViewModel = koinViewModel(),
-    navigateToNewEntry: () -> Unit,
+    navigateToNewEntry: (String) -> Unit,
     navigateToSettings: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    ObserveAsEvents(flow = viewModel.events) { event ->
+        when (event) {
+            is HomeEvent.AudioRecorded -> {
+                navigateToNewEntry(event.audioPath)
+            }
+        }
+    }
 
     HomeScreen(
         state = state,
 
         onAction = { action ->
             when (action) {
-                is HomeAction.NavigateToNewEntry -> {
-                    navigateToNewEntry()
-                }
 
                 is HomeAction.SettingsClicked -> {
                     navigateToSettings()
@@ -129,7 +134,6 @@ private fun HomeScreen(
                                 sheetState.hide()
                                 onAction(HomeAction.BottomSheetClosed)
                                 onAction(HomeAction.SaveRecording)
-                                onAction(HomeAction.NavigateToNewEntry)
                             }
                         }
                     )
