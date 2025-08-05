@@ -3,4 +3,8 @@
     <string name="how_are_you_doing">How are you doing?</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="add_topic">Add Topic…</string>
+    <string name="add_description">Add Description…</string>
+    <string name="create">Create \'%1$s\'</string>
+    <string name="remove_topic">Remove Topic</string>
 </resources>
