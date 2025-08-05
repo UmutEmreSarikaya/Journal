@@ -50,8 +50,24 @@ class NewEntryViewModel(private val repository: JournalRepository, private val a
 
             }
 
-            NewEntryAction.OnPlayButtonClicked -> {
+            NewEntryAction.StartPlaying -> {
+                _state.update { it.copy(isPlaying = true) }
+                audioPlayer.startPlayback("path_to_audio_file")
+            }
 
+            NewEntryAction.StopPlaying -> {
+                _state.update { it.copy(isPlaying = false) }
+                audioPlayer.stopPlayback()
+            }
+
+            NewEntryAction.ResumePlaying-> {
+                _state.update { it.copy(isPlaying = true) }
+                audioPlayer.resumePlayback()
+            }
+
+            NewEntryAction.PausePlaying -> {
+                _state.update { it.copy(isPlaying = false) }
+                audioPlayer.pausePlayback()
             }
 
             is NewEntryAction.OnTopicChanged -> {

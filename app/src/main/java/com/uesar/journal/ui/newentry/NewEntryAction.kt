@@ -17,7 +17,10 @@ sealed interface NewEntryAction {
     data object OnChangeMoodClicked : NewEntryAction
     data object OnCancelMoodBottomSheet : NewEntryAction
     data object OnAITranscribeButtonClicked : NewEntryAction
-    data object OnPlayButtonClicked : NewEntryAction
+    data object StartPlaying : NewEntryAction
+    data object StopPlaying : NewEntryAction
+    data object ResumePlaying : NewEntryAction
+    data object PausePlaying : NewEntryAction
     data object OpenNavigationDialog : NewEntryAction
     data object CloseNavigationDialog : NewEntryAction
     data object SaveEntry : NewEntryAction

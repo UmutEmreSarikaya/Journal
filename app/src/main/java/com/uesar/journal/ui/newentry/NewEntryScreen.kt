@@ -142,7 +142,7 @@ private fun NewEntryScreen(
                     modifier = Modifier
                         .weight(1F)
                         .padding(end = standardPadding),
-                    onPlayClicked = { onAction(NewEntryAction.OnPlayButtonClicked) })
+                    onPlayClicked = { onAction(NewEntryAction.StartPlaying) })
                 Box(
                     modifier = Modifier
                         .size(56.dp)
