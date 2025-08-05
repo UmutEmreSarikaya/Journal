@@ -104,13 +104,6 @@ private fun HomeScreen(
                         )
                     }
                 }
-                state.journalEntries.forEach {
-                    JournalEntryRow(
-                        title = it.title,
-                        topics = it.topics,
-                        description = it.description
-                    )
-                }
             }
             if (state.isBottomSheetOpen) {
                 ModalBottomSheet(
