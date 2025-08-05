@@ -18,7 +18,11 @@ class AudioPlayerImpl : AudioPlayer {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+            setOnCompletionListener {
+                stopPlayback()
+            }
         }
+
         isPaused = false
     }
 
