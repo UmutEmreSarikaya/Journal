@@ -1,5 +1,6 @@
 package com.uesar.journal.ui.newentry
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioPlayer
@@ -55,7 +56,7 @@ class NewEntryViewModel(
 
             NewEntryAction.StartPlaying -> {
                 _state.update { it.copy(isPlaying = true) }
-                audioPlayer.startPlayback("path_to_audio_file")
+                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.audioPath}")
             }
 
             NewEntryAction.StopPlaying -> {
@@ -63,7 +64,7 @@ class NewEntryViewModel(
                 audioPlayer.stopPlayback()
             }
 
-            NewEntryAction.ResumePlaying-> {
+            NewEntryAction.ResumePlaying -> {
                 _state.update { it.copy(isPlaying = true) }
                 audioPlayer.resumePlayback()
             }
@@ -113,7 +114,7 @@ class NewEntryViewModel(
                     repository.insertJournalEntry(
                         JournalEntry(
                             title = state.value.title,
-                            recording = Recording(19L, 42L, "1000"),
+                            recording = Recording(19L, ""),
                             mood = state.value.selectedMood!!,
                             description = state.value.description,
                             topics = state.value.topics,
