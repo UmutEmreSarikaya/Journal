@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.RecordingManager
+import com.uesar.journal.AudioRecorder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,13 +15,14 @@ import java.util.Locale
 
 class HomeViewModel(
     private val recordingManager: RecordingManager,
+    private val audioRecorder: AudioRecorder,
     private val application: Application,
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
     init {
-        recordingManager.trackingTime.onEach { time ->
+        audioRecorder.trackingTime.onEach { time ->
             _state.update { it.copy(recordingTime = formatCounter(time)) }
         }.launchIn(viewModelScope)
     }
@@ -37,27 +39,27 @@ class HomeViewModel(
 
             is HomeAction.StartRecording -> {
                 _state.update { it.copy(isRecording = true) }
-                recordingManager.startRecording(application = application)
+                audioRecorder.startRecording(application = application)
             }
 
             is HomeAction.PauseRecording -> {
                 _state.update { it.copy(isRecording = false) }
-                recordingManager.pauseRecording()
+                audioRecorder.pauseRecording()
             }
 
             is HomeAction.ResumeRecording -> {
                 _state.update { it.copy(isRecording = true) }
-                recordingManager.resumeRecording()
+                audioRecorder.resumeRecording()
             }
 
             is HomeAction.CancelRecording -> {
                 _state.update { it.copy(isRecording = false) }
-                recordingManager.cancelRecording()
+                audioRecorder.cancelRecording()
             }
 
             is HomeAction.SaveRecording -> {
                 _state.update { it.copy(isRecording = false) }
-                recordingManager.stopRecording()
+                audioRecorder.stopRecording()
             }
 
             else -> Unit

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class RecordingManagerImpl : RecordingManager {
+class AudioRecorderImpl : AudioRecorder {
     private var mediaRecorder: MediaRecorder? = null
     private var outputFile: File? = null
     private var durationJob: Job? = null
