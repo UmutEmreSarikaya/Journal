@@ -21,12 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
+import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
 
 @Composable
 fun AudioPlayerUI(modifier: Modifier = Modifier, onPlayClicked: () -> Unit) {
-    Row(modifier = modifier.height(56.dp).background(Color.Red, shape = RoundedCornerShape(999.dp)), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier.height(56.dp).background(InverseOnSurface, shape = RoundedCornerShape(999.dp)), verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .padding(start = 6.dp)
