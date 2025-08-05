@@ -1,12 +1,19 @@
 package com.uesar.journal.ui.newentry
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.uesar.journal.AudioPlayer
+import com.uesar.journal.Recording
+import com.uesar.journal.domain.JournalEntry
+import com.uesar.journal.domain.JournalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.util.Date
 
-class NewEntryViewModel : ViewModel() {
+class NewEntryViewModel(private val repository: JournalRepository, private val audioPlayer: AudioPlayer) : ViewModel() {
     private val _state = MutableStateFlow(NewEntryState())
     val state: StateFlow<NewEntryState> = _state.asStateFlow()
 
@@ -65,6 +72,7 @@ class NewEntryViewModel : ViewModel() {
                     _state.update { it.copy(topics = it.topics + action.topic) }
                 }
             }
+
             is NewEntryAction.OnRemoveTopic -> {
                 _state.update { it.copy(topics = it.topics - action.topic) }
             }
@@ -72,6 +80,7 @@ class NewEntryViewModel : ViewModel() {
             NewEntryAction.CloseNavigationDialog -> {
                 _state.update { it.copy(isNavigationDialogOpen = false) }
             }
+
             NewEntryAction.OpenNavigationDialog -> {
                 _state.update { it.copy(isNavigationDialogOpen = true) }
             }
@@ -81,7 +90,18 @@ class NewEntryViewModel : ViewModel() {
             }
 
             NewEntryAction.SaveEntry -> {
-
+                viewModelScope.launch {
+                    repository.insertJournalEntry(
+                        JournalEntry(
+                            title = state.value.title,
+                            recording = Recording(19L, 42L, "1000"),
+                            mood = state.value.selectedMood!!,
+                            description = state.value.description,
+                            topics = state.value.topics,
+                            date = Date()
+                        )
+                    )
+                }
             }
 
             is NewEntryAction.NavigateBack -> {
