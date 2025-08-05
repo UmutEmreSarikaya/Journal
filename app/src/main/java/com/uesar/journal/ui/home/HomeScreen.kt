@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.uesar.journal.R
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
+import com.uesar.journal.ui.home.components.NoEntries
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -88,8 +89,8 @@ private fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (state.entryCount == 0) {
-                NoEntriesScreen()
+            if (state.journalEntries.isEmpty()) {
+                NoEntries()
             } else {
                 Text("Entries: ${state.entryCount}")
             }
@@ -126,22 +127,6 @@ private fun HomeScreen(
         }
     }
 }
-
-@Composable
-private fun NoEntriesScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.no_entry), contentDescription = null
-        )
-        Text(modifier = Modifier.padding(top = 34.dp), text = "No Entries")
-        Text("Start recording your first Echo")
-    }
-}
-
 
 
 @Preview
