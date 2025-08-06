@@ -2,7 +2,6 @@ package com.uesar.journal.data.local.mapper
 
 import androidx.room.TypeConverter
 import com.uesar.journal.Mood
-import com.uesar.journal.Recording
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.Date
@@ -35,16 +34,6 @@ class AppTypeConverter {
 
     @TypeConverter
     fun toMood(data: String): Mood {
-        return Json.decodeFromString(data)
-    }
-
-    @TypeConverter
-    fun fromRecording(recording: Recording): String {
-        return Json.encodeToString(recording)
-    }
-
-    @TypeConverter
-    fun toRecording(data: String): Recording {
         return Json.decodeFromString(data)
     }
 }
