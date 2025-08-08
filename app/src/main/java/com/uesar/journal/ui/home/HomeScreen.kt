@@ -100,12 +100,14 @@ private fun HomeScreen(
             if (state.journalEntries.isEmpty()) {
                 NoEntries()
             } else {
-                LazyColumn {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.journalEntries) { entry ->
                         JournalEntryRow(
-                            title = entry.title,
-                            topics = entry.topics,
-                            description = entry.description
+                            journalEntry = entry,
+                            startPlaying = {},
+                            resumePlaying = {},
+                            pausePlaying = {},
+                            isPlaying = false
                         )
                     }
                 }
