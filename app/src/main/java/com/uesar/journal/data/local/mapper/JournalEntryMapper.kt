@@ -7,7 +7,7 @@ fun JournalEntry.toDto(): JournalEntryDTO {
     return JournalEntryDTO(
         id = id,
         title = title,
-        recording = recording,
+        audioPath = audioPath,
         mood = mood,
         description = description,
         topics = topics,
@@ -19,7 +19,7 @@ fun JournalEntryDTO.toDomain(): JournalEntry {
     return JournalEntry(
         id = id,
         title = title,
-        recording = recording,
+        audioPath = audioPath,
         mood = mood,
         description = description,
         topics = topics,
