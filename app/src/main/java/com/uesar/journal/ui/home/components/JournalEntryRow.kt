@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uesar.journal.R
+import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.ui.components.AudioPlayerUI
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
@@ -31,7 +32,12 @@ import com.uesar.journal.ui.theme.standardPadding
 
 @Composable
 fun JournalEntryRow(
-    modifier: Modifier = Modifier, title: String, topics: List<String>? = null, description: String? = null
+    modifier: Modifier = Modifier,
+    journalEntry: JournalEntry,
+    startPlaying: () -> Unit,
+    resumePlaying: () -> Unit,
+    pausePlaying: () -> Unit,
+    isPlaying: Boolean
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(R.drawable.excited), contentDescription = null)
@@ -42,10 +48,18 @@ fun JournalEntryRow(
             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         ) {
             Column(modifier = Modifier.padding(standardPadding)) {
-                Row { Text(title) }
-                AudioPlayerUI(modifier = Modifier.padding(top = smallPadding)) { }
+                Row { Text(journalEntry.title) }
+                AudioPlayerUI(
+                    modifier = Modifier.padding(top = smallPadding),
+                    startPlaying = {startPlaying()},
+                    resumePlaying = {resumePlaying()},
+                    pausePlaying = {pausePlaying()},
+                    isPlaying = isPlaying,
+                    currentTime = "",
+                    totalTime = ""
+                )
                 FlowRow {
-                    topics?.forEach { topic ->
+                    journalEntry.topics.forEach { topic ->
                         InputChip(
                             modifier = Modifier.padding(end = smallPadding),
                             colors = InputChipDefaults.inputChipColors(
@@ -71,7 +85,7 @@ fun JournalEntryRow(
                             })
                     }
                 }
-                description?.let { Text(description) }
+                Text(journalEntry.description)
             }
         }
     }
@@ -81,7 +95,21 @@ fun JournalEntryRow(
 @Composable
 private fun JournalEntryRowPreview() {
     JournalTheme {
-        JournalEntryRow(modifier = Modifier.fillMaxWidth(), title = "My Entry", topics = listOf("topic 1", "topic 2"))
+        JournalEntryRow(
+            modifier = Modifier.fillMaxWidth(),
+            journalEntry = JournalEntry(
+                title = "My Entry",
+                topics = listOf("topic 1", "topic 2"),
+                description = "This is a description",
+                audioPath = TODO(),
+                mood = TODO(),
+                date = TODO()
+            ),
+            startPlaying = {},
+            resumePlaying = {},
+            pausePlaying = {},
+            isPlaying = false
+        )
     }
 }
 
@@ -91,8 +119,18 @@ private fun JournalEntryRowMultipleTopicsPreview() {
     JournalTheme {
         JournalEntryRow(
             modifier = Modifier.fillMaxWidth(),
-            title = "My Entry",
-            topics = listOf("topic 1", "topic 2", "topic 1513454354", "topic 2")
+            journalEntry = JournalEntry(
+                title = "My Entry",
+                topics = listOf("topic 1", "topic 2"),
+                description = "This is a description",
+                audioPath = TODO(),
+                mood = TODO(),
+                date = TODO()
+            ),
+            startPlaying = {},
+            resumePlaying = {},
+            pausePlaying = {},
+            isPlaying = false
         )
     }
 }
