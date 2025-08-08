@@ -1,47 +1,46 @@
 package com.uesar.journal
 
+import android.content.Context
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
+import androidx.core.net.toUri
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
+import java.io.File
 import java.io.IOException
 
-class AudioPlayerImpl : AudioPlayer {
+class AudioPlayerImpl(private val context: Context) : AudioPlayer {
 
     private var mediaPlayer: MediaPlayer? = null
-    private var isPaused: Boolean = false
+    private val _isPlaying = MutableStateFlow(false)
+    override val isPlaying: StateFlow<Boolean> = _isPlaying
 
     override fun startPlayback(filePath: String) {
-        stopPlayback()
-        mediaPlayer = MediaPlayer().apply {
+        mediaPlayer = MediaPlayer.create(context, filePath.toUri())
+        mediaPlayer?.apply {
             try {
-                setDataSource(filePath)
-                prepare()
                 start()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+            _isPlaying.value = true
             setOnCompletionListener {
-                stopPlayback()
+                _isPlaying.value = false
             }
         }
-
-        isPaused = false
     }
 
     override fun pausePlayback() {
-        mediaPlayer?.let {
-            if (it.isPlaying) {
-                it.pause()
-                isPaused = true
-            }
-        }
+        mediaPlayer?.pause()
+        _isPlaying.value = false
     }
 
     override fun resumePlayback() {
-        mediaPlayer?.let {
-            if (isPaused) {
-                it.start()
-                isPaused = false
-            }
-        }
+        mediaPlayer?.start()
+        _isPlaying.value = true
     }
 
     override fun stopPlayback() {
@@ -50,6 +49,28 @@ class AudioPlayerImpl : AudioPlayer {
             release()
         }
         mediaPlayer = null
-        isPaused = false
+        _isPlaying.value = false
     }
+
+    override fun getDuration(file: File): Int {
+        val retriever = MediaMetadataRetriever()
+        return try {
+            retriever.setDataSource(context, file.toUri())
+            val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            duration?.toInt()?.div(1000) ?: 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            -1
+        } finally {
+            retriever.release()
+        }
+    }
+
+    override fun getCurrentPosition(): Flow<Int> = flow {
+        while (mediaPlayer != null) {
+            emit((mediaPlayer?.currentPosition ?: 0) / 1000)
+            delay(500)
+        }
+    }
+
 }
