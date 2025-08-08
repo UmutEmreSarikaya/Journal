@@ -26,33 +26,61 @@ import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
 
 @Composable
-fun AudioPlayerUI(modifier: Modifier = Modifier, onPlayClicked: () -> Unit) {
-    Row(modifier = modifier.height(56.dp).background(InverseOnSurface, shape = RoundedCornerShape(999.dp)), verticalAlignment = Alignment.CenterVertically) {
+fun AudioPlayerUI(
+    modifier: Modifier = Modifier,
+    startPlaying: () -> Unit,
+    resumePlaying: () -> Unit,
+    pausePlaying: () -> Unit,
+    isPlaying: Boolean,
+    currentTime: String,
+    totalTime: String,
+) {
+    Row(
+        modifier = modifier
+            .height(56.dp)
+            .background(InverseOnSurface, shape = RoundedCornerShape(999.dp)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Box(
             modifier = Modifier
                 .padding(start = 6.dp)
                 .size(44.dp)
                 .shadow(elevation = 10.dp, shape = CircleShape)
                 .background(Color.White, CircleShape)
-                .clickable { onPlayClicked() },
+                .clickable { if (isPlaying) pausePlaying() else if (currentTime == "00:00") startPlaying() else resumePlaying() },
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(R.drawable.play_arrow_filled),
+                painter = painterResource(if (isPlaying) R.drawable.pause else R.drawable.play_arrow_filled),
                 contentDescription = null,
                 tint = Color.Black
             )
         }
-        LinearProgressIndicator(modifier= Modifier.padding(horizontal = standardPadding).weight(1F))
-        Text(modifier = Modifier.padding(end = standardPadding),text = "00:00/00:00")
+        LinearProgressIndicator(
+            modifier = Modifier
+                .padding(horizontal = standardPadding)
+                .weight(1F),
+
+        )
+        Text(
+            modifier = Modifier.padding(end = standardPadding),
+            text = "${currentTime}/${totalTime}"
+        )
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun AudioPlayerUIPreview() {
     JournalTheme {
-        AudioPlayerUI(onPlayClicked = {})
+        AudioPlayerUI(
+            startPlaying = {},
+            resumePlaying = {},
+            pausePlaying = {},
+            isPlaying = false,
+            currentTime = "00:00",
+            totalTime = "00:00"
+        )
     }
 }
