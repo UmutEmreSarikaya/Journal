@@ -4,14 +4,15 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioPlayer
-import com.uesar.journal.Recording
 import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.domain.JournalRepository
+import com.uesar.journal.ui.utils.formatSecondsToTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Date
 
 class NewEntryViewModel(
@@ -21,6 +22,14 @@ class NewEntryViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewEntryState())
     val state: StateFlow<NewEntryState> = _state.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            audioPlayer.isPlaying.collect { isPlaying ->
+                _state.update { it.copy(recording = state.value.recording.copy(isPlaying = isPlaying)) }
+            }
+        }
+    }
 
     fun onAction(action: NewEntryAction) {
         when (action) {
@@ -55,22 +64,29 @@ class NewEntryViewModel(
             }
 
             NewEntryAction.StartPlaying -> {
-                _state.update { it.copy(isPlaying = true) }
-                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.audioPath}")
+                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.recording.audioPath}")
+                viewModelScope.launch {
+                    audioPlayer.getCurrentPosition().collect { time ->
+                        _state.update {
+                            it.copy(
+                                recording = state.value.recording.copy(
+                                    currentTime = formatSecondsToTime(time)
+                                )
+                            )
+                        }
+                    }
+                }
             }
 
             NewEntryAction.StopPlaying -> {
-                _state.update { it.copy(isPlaying = false) }
                 audioPlayer.stopPlayback()
             }
 
             NewEntryAction.ResumePlaying -> {
-                _state.update { it.copy(isPlaying = true) }
                 audioPlayer.resumePlayback()
             }
 
             NewEntryAction.PausePlaying -> {
-                _state.update { it.copy(isPlaying = false) }
                 audioPlayer.pausePlayback()
             }
 
@@ -114,7 +130,7 @@ class NewEntryViewModel(
                     repository.insertJournalEntry(
                         JournalEntry(
                             title = state.value.title,
-                            recording = Recording(19L, ""),
+                            audioPath = state.value.recording.audioPath,
                             mood = state.value.selectedMood!!,
                             description = state.value.description,
                             topics = state.value.topics,
@@ -131,6 +147,15 @@ class NewEntryViewModel(
     }
 
     fun setAudioPath(audioPath: String) {
-        _state.update { it.copy(audioPath = audioPath) }
+        _state.update { it.copy(recording = state.value.recording.copy(audioPath = audioPath)) }
+        _state.update {
+            it.copy(
+                recording = state.value.recording.copy(
+                    totalTime = formatSecondsToTime(
+                        audioPlayer.getDuration(File("${application.cacheDir.absolutePath}/$audioPath"))
+                    )
+                )
+            )
+        }
     }
 }

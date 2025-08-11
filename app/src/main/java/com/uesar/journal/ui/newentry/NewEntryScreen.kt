@@ -147,7 +147,13 @@ private fun NewEntryScreen(
                     modifier = Modifier
                         .weight(1F)
                         .padding(end = standardPadding),
-                    onPlayClicked = { onAction(NewEntryAction.StartPlaying) })
+                    startPlaying = { onAction(NewEntryAction.StartPlaying) },
+                    resumePlaying = { onAction(NewEntryAction.ResumePlaying) },
+                    pausePlaying = { onAction(NewEntryAction.PausePlaying) },
+                    isPlaying = state.recording.isPlaying,
+                    currentTime = state.recording.currentTime,
+                    totalTime = state.recording.totalTime
+                )
                 Box(
                     modifier = Modifier
                         .size(56.dp)
