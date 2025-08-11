@@ -67,7 +67,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-
 fun NewEntryScreenRoot(
     viewModel: NewEntryViewModel = koinViewModel(), audioPath: String, navigateBack: () -> Unit
 ) {
@@ -365,6 +364,7 @@ private fun NewEntryScreen(
             confirmButton = {
                 Button(onClick = {
                     onAction(NewEntryAction.CloseNavigationDialog)
+                    onAction(NewEntryAction.StopPlaying)
                     onAction(NewEntryAction.NavigateBack)
                 }) {
                     Text("Yes")
