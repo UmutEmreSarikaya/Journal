@@ -140,7 +140,12 @@ class NewEntryViewModel(
                 }
             }
 
-            is NewEntryAction.NavigateBack -> {
+            is NewEntryAction.DeleteAudioFile -> { action
+                val file = File("${application.cacheDir.absolutePath}/${action.audioPath}")
+                file.delete()
+            }
+
+            NewEntryAction.NavigateBack -> {
                 //No implementation here
             }
         }

@@ -10,6 +10,7 @@ sealed interface NewEntryAction {
     data class OnConfirmMoodClicked(val selectedMood: Mood) : NewEntryAction
     data class OnRemoveTopic(val topic: String) : NewEntryAction
     data class OnAddTopic(val topic: String) : NewEntryAction
+    data class DeleteAudioFile(val audioPath: String): NewEntryAction
     data object NavigateBack : NewEntryAction
     data object CloseTopicDropDown : NewEntryAction
     data object OpenTopicDropDown : NewEntryAction
