@@ -372,6 +372,7 @@ private fun NewEntryScreen(
                     onAction(NewEntryAction.CloseNavigationDialog)
                     onAction(NewEntryAction.StopPlaying)
                     onAction(NewEntryAction.NavigateBack)
+                    onAction(NewEntryAction.DeleteAudioFile(state.recording.audioPath))
                 }) {
                     Text("Yes")
                 }
