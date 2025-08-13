@@ -9,4 +9,8 @@ sealed interface HomeAction {
     data object ResumeRecording: HomeAction
     data object PauseRecording: HomeAction
     data object SaveRecording: HomeAction
+    data class StartPlaying(val audioPath: String) : HomeAction
+    data object StopPlaying : HomeAction
+    data object ResumePlaying : HomeAction
+    data object PausePlaying : HomeAction
 }
