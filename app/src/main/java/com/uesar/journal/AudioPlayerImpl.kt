@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import java.io.File
-import java.io.IOException
 
 class AudioPlayerImpl(private val context: Context) : AudioPlayer {
 
@@ -21,11 +20,7 @@ class AudioPlayerImpl(private val context: Context) : AudioPlayer {
     override fun startPlayback(filePath: String) {
         mediaPlayer = MediaPlayer.create(context, filePath.toUri())
         mediaPlayer?.apply {
-            try {
-                start()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            start()
             _isPlaying.value = true
             setOnCompletionListener {
                 _isPlaying.value = false
