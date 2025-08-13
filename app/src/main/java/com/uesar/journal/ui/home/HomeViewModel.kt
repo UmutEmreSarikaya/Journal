@@ -3,8 +3,10 @@ package com.uesar.journal.ui.home
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uesar.journal.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
+import com.uesar.journal.ui.home.HomeEvent.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +19,7 @@ import java.util.Locale
 
 class HomeViewModel(
     private val audioRecorder: AudioRecorder,
+    private val audioPlayer: AudioPlayer,
     private val application: Application,
     repository: JournalRepository,
 ) : ViewModel() {
@@ -30,48 +33,68 @@ class HomeViewModel(
             _state.update { it.copy(recordingTime = formatCounter(time)) }
         }.launchIn(viewModelScope)
 
-        repository.getJournalEntries().onEach{ entries ->
+        repository.getJournalEntries().onEach { entries ->
             _state.update { it.copy(journalEntries = entries) }
         }.launchIn(viewModelScope)
     }
 
     fun onAction(action: HomeAction) {
         when (action) {
-            is HomeAction.BottomSheetOpened -> {
+            HomeAction.BottomSheetOpened -> {
                 _state.update { it.copy(isBottomSheetOpen = true) }
             }
 
-            is HomeAction.BottomSheetClosed -> {
+            HomeAction.BottomSheetClosed -> {
                 _state.update { it.copy(isBottomSheetOpen = false) }
             }
 
-            is HomeAction.StartRecording -> {
+            HomeAction.StartRecording -> {
                 _state.update { it.copy(isRecording = true) }
                 audioRecorder.startRecording(application = application)
             }
 
-            is HomeAction.PauseRecording -> {
+            HomeAction.PauseRecording -> {
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.pauseRecording()
             }
 
-            is HomeAction.ResumeRecording -> {
+            HomeAction.ResumeRecording -> {
                 _state.update { it.copy(isRecording = true) }
                 audioRecorder.resumeRecording()
             }
 
-            is HomeAction.CancelRecording -> {
+            HomeAction.CancelRecording -> {
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.cancelRecording()
             }
 
-            is HomeAction.SaveRecording -> {
+            HomeAction.SaveRecording -> {
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.stopRecording()
-                eventChannel.trySend(HomeEvent.AudioRecorded(audioRecorder.outputFile?.name ?: ""))
+                eventChannel.trySend(AudioRecorded(audioRecorder.outputFile?.name ?: ""))
             }
 
-            else -> Unit
+            is HomeAction.StartPlaying -> {
+                audioPlayer.startPlayback(action.audioPath)
+            }
+
+            HomeAction.ResumePlaying -> {
+                audioPlayer.resumePlayback()
+            }
+
+            HomeAction.PausePlaying -> {
+                audioPlayer.pausePlayback()
+            }
+
+            HomeAction.StopPlaying -> {
+                audioPlayer.stopPlayback()
+            }
+
+
+            HomeAction.SettingsClicked -> {
+                // No implementation here
+            }
+
         }
     }
 
