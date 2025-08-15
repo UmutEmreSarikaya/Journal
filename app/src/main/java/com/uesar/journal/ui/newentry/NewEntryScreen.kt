@@ -150,9 +150,9 @@ private fun NewEntryScreen(
                     startPlaying = { onAction(NewEntryAction.StartPlaying) },
                     resumePlaying = { onAction(NewEntryAction.ResumePlaying) },
                     pausePlaying = { onAction(NewEntryAction.PausePlaying) },
-                    isPlaying = state.recording.isPlaying,
-                    currentTime = state.recording.currentTime,
-                    totalTime = state.recording.totalTime
+                    isPlaying = state.playback.isPlaying,
+                    currentTime = state.playback.currentTime,
+                    totalTime = state.playback.totalTime
                 )
                 Box(
                     modifier = Modifier
@@ -372,7 +372,7 @@ private fun NewEntryScreen(
                     onAction(NewEntryAction.CloseNavigationDialog)
                     onAction(NewEntryAction.StopPlaying)
                     onAction(NewEntryAction.NavigateBack)
-                    onAction(NewEntryAction.DeleteAudioFile(state.recording.audioPath))
+                    onAction(NewEntryAction.DeleteAudioFile(state.playback.audioPath))
                 }) {
                     Text("Yes")
                 }

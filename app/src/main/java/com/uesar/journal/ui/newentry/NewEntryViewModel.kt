@@ -26,7 +26,7 @@ class NewEntryViewModel(
     init {
         viewModelScope.launch {
             audioPlayer.isPlaying.collect { isPlaying ->
-                _state.update { it.copy(recording = state.value.recording.copy(isPlaying = isPlaying)) }
+                _state.update { it.copy(playback = state.value.playback.copy(isPlaying = isPlaying)) }
             }
         }
     }
@@ -64,12 +64,12 @@ class NewEntryViewModel(
             }
 
             NewEntryAction.StartPlaying -> {
-                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.recording.audioPath}")
+                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.playback.audioPath}")
                 viewModelScope.launch {
                     audioPlayer.getCurrentPosition().collect { time ->
                         _state.update {
                             it.copy(
-                                recording = state.value.recording.copy(
+                                playback = state.value.playback.copy(
                                     currentTime = formatSecondsToTime(time)
                                 )
                             )
@@ -130,7 +130,7 @@ class NewEntryViewModel(
                     repository.insertJournalEntry(
                         JournalEntry(
                             title = state.value.title,
-                            audioPath = state.value.recording.audioPath,
+                            audioPath = state.value.playback.audioPath,
                             mood = state.value.selectedMood!!,
                             description = state.value.description,
                             topics = state.value.topics,
@@ -152,10 +152,10 @@ class NewEntryViewModel(
     }
 
     fun setAudioPath(audioPath: String) {
-        _state.update { it.copy(recording = state.value.recording.copy(audioPath = audioPath)) }
+        _state.update { it.copy(playback = state.value.playback.copy(audioPath = audioPath)) }
         _state.update {
             it.copy(
-                recording = state.value.recording.copy(
+                playback = state.value.playback.copy(
                     totalTime = formatSecondsToTime(
                         audioPlayer.getDuration(File("${application.cacheDir.absolutePath}/$audioPath"))
                     )

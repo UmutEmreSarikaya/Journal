@@ -1,11 +1,11 @@
 package com.uesar.journal.ui.newentry
 
 import com.uesar.journal.Mood
-import com.uesar.journal.domain.Recording
+import com.uesar.journal.domain.Playback
 
 data class NewEntryState(
     val title: String = "",
-    val recording: Recording = Recording(false, "00:00", "00:00", ""),
+    val playback: Playback = Playback(false, "00:00", "00:00", ""),
     val topicText: String = "",
     val description: String = "",
     val topics: List<String> = emptyList(),
