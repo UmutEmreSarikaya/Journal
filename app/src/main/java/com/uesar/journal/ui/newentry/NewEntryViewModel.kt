@@ -1,6 +1,5 @@
 package com.uesar.journal.ui.newentry
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioPlayer
@@ -17,7 +16,6 @@ import java.util.Date
 
 class NewEntryViewModel(
     private val repository: JournalRepository,
-    private val application: Application,
     private val audioPlayer: AudioPlayer
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewEntryState())
@@ -64,7 +62,7 @@ class NewEntryViewModel(
             }
 
             NewEntryAction.StartPlaying -> {
-                audioPlayer.startPlayback("${application.cacheDir.absolutePath}/${state.value.playback.audioPath}")
+                audioPlayer.startPlayback(state.value.playback.audioPath)
                 viewModelScope.launch {
                     audioPlayer.getCurrentPosition().collect { time ->
                         _state.update {
@@ -141,7 +139,7 @@ class NewEntryViewModel(
             }
 
             is NewEntryAction.DeleteAudioFile -> { action
-                val file = File("${application.cacheDir.absolutePath}/${action.audioPath}")
+                val file = File(action.audioPath)
                 file.delete()
             }
 
@@ -157,7 +155,7 @@ class NewEntryViewModel(
             it.copy(
                 playback = state.value.playback.copy(
                     totalTime = formatSecondsToTime(
-                        audioPlayer.getDuration(File("${application.cacheDir.absolutePath}/$audioPath"))
+                        audioPlayer.getDuration(File(audioPath))
                     )
                 )
             )
