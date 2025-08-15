@@ -37,6 +37,8 @@ fun JournalEntryRow(
     startPlaying: () -> Unit,
     resumePlaying: () -> Unit,
     pausePlaying: () -> Unit,
+    currentTime: String,
+    totalTime: String,
     isPlaying: Boolean
 ) {
     Row(modifier = modifier) {
@@ -55,8 +57,8 @@ fun JournalEntryRow(
                     resumePlaying = {resumePlaying()},
                     pausePlaying = {pausePlaying()},
                     isPlaying = isPlaying,
-                    currentTime = "",
-                    totalTime = ""
+                    currentTime = currentTime,
+                    totalTime = totalTime
                 )
                 FlowRow {
                     journalEntry.topics.forEach { topic ->
@@ -108,6 +110,8 @@ private fun JournalEntryRowPreview() {
             startPlaying = {},
             resumePlaying = {},
             pausePlaying = {},
+            "00:00",
+            "00:00",
             isPlaying = false
         )
     }
@@ -130,6 +134,8 @@ private fun JournalEntryRowMultipleTopicsPreview() {
             startPlaying = {},
             resumePlaying = {},
             pausePlaying = {},
+            "00:00",
+            "00:00",
             isPlaying = false
         )
     }
