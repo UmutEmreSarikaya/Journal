@@ -1,0 +1,18 @@
+package com.uesar.journal.ui.model
+
+import com.uesar.journal.Mood
+import com.uesar.journal.ui.PlayerState
+import java.util.Date
+
+data class JournalEntryUIState (
+    val id: Int = 0,
+    val title: String = "",
+    val mood: Mood? = null,
+    val description: String = "",
+    val topics: List<String> = emptyList(),
+    val date: Date = Date(),
+    val audioPath: String = "",
+    val playerState: PlayerState = PlayerState.Idle,
+    val totalTime: String = "",
+    val currentTime: String = "00:00"
+)
