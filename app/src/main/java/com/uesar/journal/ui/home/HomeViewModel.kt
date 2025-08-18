@@ -7,6 +7,7 @@ import com.uesar.journal.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeEvent.*
+import com.uesar.journal.ui.utils.formatSecondsToMinutes
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

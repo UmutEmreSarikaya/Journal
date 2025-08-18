@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioPlayer
 import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.domain.JournalRepository
-import com.uesar.journal.ui.utils.formatSecondsToTime
+import com.uesar.journal.ui.utils.formatSecondsToMinutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -69,6 +69,7 @@ class NewEntryViewModel(
                             it.copy(
                                 playback = state.value.playback.copy(
                                     currentTime = formatSecondsToTime(time)
+                                    currentTime = formatSecondsToMinutes(currentTime)
                                 )
                             )
                         }
@@ -156,6 +157,7 @@ class NewEntryViewModel(
                 playback = state.value.playback.copy(
                     totalTime = formatSecondsToTime(
                         audioPlayer.getDuration(File(audioPath))
+                    totalTime = formatSecondsToMinutes(
                     )
                 )
             )
