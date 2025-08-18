@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
+import com.uesar.journal.ui.PlayerState
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
@@ -31,9 +32,9 @@ fun AudioPlayerUI(
     startPlaying: () -> Unit,
     resumePlaying: () -> Unit,
     pausePlaying: () -> Unit,
-    isPlaying: Boolean,
     currentTime: String,
     totalTime: String,
+    playerState: PlayerState = PlayerState.Idle
 ) {
     Row(
         modifier = modifier
@@ -47,12 +48,21 @@ fun AudioPlayerUI(
                 .size(44.dp)
                 .shadow(elevation = 10.dp, shape = CircleShape)
                 .background(Color.White, CircleShape)
-                .clickable { if (isPlaying) pausePlaying() else if (currentTime == "00:00") startPlaying() else resumePlaying() },
+                .clickable {
+                    when (playerState) {
+                        PlayerState.Playing -> pausePlaying()
+                        PlayerState.Paused, PlayerState.Completed -> resumePlaying()
+                        PlayerState.Idle -> startPlaying()
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
-                painter = painterResource(if (isPlaying) R.drawable.pause else R.drawable.play_arrow_filled),
+                painter = painterResource(
+                    if (playerState == PlayerState.Playing) R.drawable.pause
+                    else R.drawable.play_arrow_filled
+                ),
                 contentDescription = null,
                 tint = Color.Black
             )
@@ -78,7 +88,6 @@ private fun AudioPlayerUIPreview() {
             startPlaying = {},
             resumePlaying = {},
             pausePlaying = {},
-            isPlaying = false,
             currentTime = "00:00",
             totalTime = "00:00"
         )

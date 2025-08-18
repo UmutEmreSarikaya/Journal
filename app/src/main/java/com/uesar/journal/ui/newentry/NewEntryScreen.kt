@@ -153,6 +153,7 @@ private fun NewEntryScreen(
                     isPlaying = state.playback.isPlaying,
                     currentTime = state.playback.currentTime,
                     totalTime = state.playback.totalTime
+                    playerState = state.journalEntryUIState.playerState
                 )
                 Box(
                     modifier = Modifier

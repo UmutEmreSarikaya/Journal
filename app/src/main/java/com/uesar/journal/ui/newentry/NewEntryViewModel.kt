@@ -23,8 +23,8 @@ class NewEntryViewModel(
 
     init {
         viewModelScope.launch {
-            audioPlayer.isPlaying.collect { isPlaying ->
-                _state.update { it.copy(playback = state.value.playback.copy(isPlaying = isPlaying)) }
+            audioPlayer.playerState.collect { playerState ->
+                _state.update { it.copy(journalEntryUIState = state.value.journalEntryUIState.copy(playerState = playerState)) }
             }
         }
     }

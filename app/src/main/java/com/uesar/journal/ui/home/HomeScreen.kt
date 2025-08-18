@@ -108,6 +108,7 @@ private fun HomeScreen(
                             resumePlaying = {},
                             pausePlaying = {},
                             isPlaying = false
+                            playerState = entry.playerState
                         )
                     }
                 }

@@ -14,28 +14,30 @@ import java.io.File
 class AudioPlayerImpl(private val context: Context) : AudioPlayer {
 
     private var mediaPlayer: MediaPlayer? = null
-    private val _isPlaying = MutableStateFlow(false)
-    override val isPlaying: StateFlow<Boolean> = _isPlaying
+    private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Idle)
+    override val playerState: StateFlow<PlayerState> = _playerState
+    override var filePath: String = ""
 
     override fun startPlayback(filePath: String) {
+        this.filePath = filePath
         mediaPlayer = MediaPlayer.create(context, filePath.toUri())
         mediaPlayer?.apply {
             start()
-            _isPlaying.value = true
+            _playerState.value = PlayerState.Playing
             setOnCompletionListener {
-                _isPlaying.value = false
+                _playerState.value = PlayerState.Completed
             }
         }
     }
 
     override fun pausePlayback() {
         mediaPlayer?.pause()
-        _isPlaying.value = false
+        _playerState.value = PlayerState.Paused
     }
 
     override fun resumePlayback() {
         mediaPlayer?.start()
-        _isPlaying.value = true
+        _playerState.value = PlayerState.Playing
     }
 
     override fun stopPlayback() {
@@ -44,7 +46,7 @@ class AudioPlayerImpl(private val context: Context) : AudioPlayer {
             release()
         }
         mediaPlayer = null
-        _isPlaying.value = false
+        _playerState.value = PlayerState.Idle
     }
 
     override fun getDurationInSeconds(file: File): Int {

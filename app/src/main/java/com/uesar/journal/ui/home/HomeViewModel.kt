@@ -36,6 +36,22 @@ class HomeViewModel(
         repository.getJournalEntries().onEach { entries ->
             _state.update { it.copy(journalEntries = entries) }
         }.launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            audioPlayer.playerState.collect { playerState ->
+                _state.update { state ->
+                    val idx = state.journalEntries.indexOfFirst { it.audioPath == audioPlayer.filePath }
+                    if (idx == -1) return@update state
+
+                    val updatedEntries = state.journalEntries.toMutableList()
+                    updatedEntries[idx] = updatedEntries[idx].copy(
+                        playerState = playerState
+                    )
+
+                    state.copy(journalEntries = updatedEntries)
+                }
+            }
+        }
     }
 
     fun onAction(action: HomeAction) {
