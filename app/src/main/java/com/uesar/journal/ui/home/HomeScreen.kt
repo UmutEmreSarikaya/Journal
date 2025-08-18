@@ -104,10 +104,11 @@ private fun HomeScreen(
                     items(state.journalEntries) { entry ->
                         JournalEntryRow(
                             journalEntry = entry,
-                            startPlaying = {},
-                            resumePlaying = {},
-                            pausePlaying = {},
-                            isPlaying = false
+                            startPlaying = {onAction(HomeAction.StartPlaying(entry.audioPath))},
+                            resumePlaying = {onAction(HomeAction.ResumePlaying)},
+                            pausePlaying = {onAction(HomeAction.PausePlaying)},
+                            currentTime = entry.currentTime,
+                            totalTime = entry.totalTime,
                             playerState = entry.playerState
                         )
                     }
