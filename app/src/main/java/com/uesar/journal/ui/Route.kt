@@ -7,4 +7,6 @@ sealed interface Route {
     data object Home : Route
     @Serializable
     data class NewEntry(val audioPath: String) : Route
+    @Serializable
+    data object Settings : Route
 }

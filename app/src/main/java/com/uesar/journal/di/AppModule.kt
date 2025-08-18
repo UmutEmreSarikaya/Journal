@@ -11,6 +11,7 @@ import com.uesar.journal.data.local.JournalRepositoryImpl
 import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeViewModel
 import com.uesar.journal.ui.newentry.NewEntryViewModel
+import com.uesar.journal.ui.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -20,6 +21,7 @@ import org.koin.dsl.module
 val appModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::NewEntryViewModel)
+    viewModelOf(::SettingsViewModel)
     singleOf(::AudioRecorderImpl).bind<AudioRecorder>()
     singleOf(::AudioPlayerImpl).bind<AudioPlayer>()
     singleOf(::JournalRepositoryImpl).bind<JournalRepository>()

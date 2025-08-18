@@ -21,6 +21,8 @@ import com.uesar.journal.ui.home.HomeScreenRoot
 import com.uesar.journal.ui.home.HomeViewModel
 import com.uesar.journal.ui.newentry.NewEntryScreenRoot
 import com.uesar.journal.ui.newentry.NewEntryViewModel
+import com.uesar.journal.ui.settings.SettingsScreenRoot
+import com.uesar.journal.ui.settings.SettingsViewModel
 import com.uesar.journal.ui.theme.JournalTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,7 +61,7 @@ private fun AppNavigation() {
             HomeScreenRoot(
                 viewModel = homeViewModel,
                 navigateToNewEntry = { audioPath -> navController.navigate(Route.NewEntry(audioPath)) },
-                navigateToSettings = {})
+                navigateToSettings = {navController.navigate(Route.Settings)})
         }
         composable<Route.NewEntry> { backStackEntry ->
             val newEntryRoute = backStackEntry.toRoute<Route.NewEntry>()
@@ -69,6 +71,12 @@ private fun AppNavigation() {
                 viewModel = newEntryViewModel,
                 audioPath = audioPath,
                 navigateBack = { navController.popBackStack() })
+        }
+        composable<Route.Settings> {
+            val settingsViewModel = koinViewModel<SettingsViewModel>()
+            SettingsScreenRoot(
+                viewModel = settingsViewModel,
+                navigateBack = {navController.popBackStack()})
         }
     }
 }
