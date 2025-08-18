@@ -9,6 +9,7 @@ import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeEvent.*
 import com.uesar.journal.ui.model.mapper.toUIState
 import com.uesar.journal.ui.utils.formatSecondsToMinutes
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
 
@@ -30,6 +32,8 @@ class HomeViewModel(
     val state: StateFlow<HomeState> = _state.asStateFlow()
     private val eventChannel = Channel<HomeEvent>()
     val events = eventChannel.receiveAsFlow()
+    private var positionJob: Job? = null
+
 
     init {
         audioRecorder.recordingTime.onEach { recordingTime ->
@@ -110,7 +114,22 @@ class HomeViewModel(
             }
 
             is HomeAction.StartPlaying -> {
+                positionJob?.cancel()
+
                 audioPlayer.startPlayback(action.audioPath)
+                positionJob = viewModelScope.launch {
+                    audioPlayer.getCurrentPosition().collect { currentTime ->
+                        val index = state.value.journalEntries.indexOfFirst { it.audioPath == action.audioPath }
+
+                        val updatedEntries = state.value.journalEntries.toMutableList()
+                        updatedEntries[index] = updatedEntries[index].copy(
+                            currentTime = formatSecondsToMinutes(currentTime)
+                        )
+                        _state.update { state ->
+                            state.copy(journalEntries = updatedEntries)
+                        }
+                    }
+                }
             }
 
             HomeAction.ResumePlaying -> {
