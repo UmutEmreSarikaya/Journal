@@ -126,12 +126,12 @@ private fun NewEntryScreen(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) { onAction(NewEntryAction.OnChangeMoodClicked) },
-                    painter = painterResource(state.selectedMood?.icon ?: R.drawable.change_mood),
+                    painter = painterResource(state.journalEntryUIState.mood?.icon ?: R.drawable.change_mood),
                     contentDescription = null
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = state.title,
+                    value = state.journalEntryUIState.title,
                     onValueChange = { onAction(NewEntryAction.OnTitleChanged(it)) },
                     placeholder = { Text("Add Title...") },
                     colors = OutlinedTextFieldDefaults.colors(
@@ -150,9 +150,8 @@ private fun NewEntryScreen(
                     startPlaying = { onAction(NewEntryAction.StartPlaying) },
                     resumePlaying = { onAction(NewEntryAction.ResumePlaying) },
                     pausePlaying = { onAction(NewEntryAction.PausePlaying) },
-                    isPlaying = state.playback.isPlaying,
-                    currentTime = state.playback.currentTime,
-                    totalTime = state.playback.totalTime
+                    currentTime = state.journalEntryUIState.currentTime,
+                    totalTime = state.journalEntryUIState.totalTime,
                     playerState = state.journalEntryUIState.playerState
                 )
                 Box(
@@ -182,7 +181,7 @@ private fun NewEntryScreen(
                     color = OutlineVariant,
                     fontSize = 16.sp
                 )
-                state.topics.forEach {
+                state.journalEntryUIState.topics.forEach {
                     InputChip(
                         modifier = Modifier.padding(end = smallPadding),
                         colors = InputChipDefaults.inputChipColors(
@@ -254,7 +253,7 @@ private fun NewEntryScreen(
                     ExposedDropdownMenu(
                         expanded = state.isTopicDropDownOpen,
                         onDismissRequest = { onAction(NewEntryAction.CloseTopicDropDown) }) {
-                        state.topics.forEach {
+                        state.journalEntryUIState.topics.forEach {
                             DropdownMenuItem(leadingIcon = {
                                 Text(
                                     modifier = Modifier
@@ -288,7 +287,7 @@ private fun NewEntryScreen(
                 )
                 OutlinedTextField(
                     modifier = Modifier.weight(1F),
-                    value = state.description,
+                    value = state.journalEntryUIState.description,
                     onValueChange = { onAction(NewEntryAction.OnDescriptionChanged(it)) },
                     placeholder = { Text(stringResource(R.string.add_description)) },
                     colors = OutlinedTextFieldDefaults.colors(
@@ -320,7 +319,7 @@ private fun NewEntryScreen(
                     ), onClick = {
                         onAction(NewEntryAction.SaveEntry)
                         onAction(NewEntryAction.NavigateBack)
-                    }, enabled = state.selectedMood != null && state.title.isNotEmpty()
+                    }, enabled = state.journalEntryUIState.mood != null && state.journalEntryUIState.title.isNotEmpty()
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -373,7 +372,7 @@ private fun NewEntryScreen(
                     onAction(NewEntryAction.CloseNavigationDialog)
                     onAction(NewEntryAction.StopPlaying)
                     onAction(NewEntryAction.NavigateBack)
-                    onAction(NewEntryAction.DeleteAudioFile(state.playback.audioPath))
+                    onAction(NewEntryAction.DeleteAudioFile(state.journalEntryUIState.audioPath))
                 }) {
                     Text("Yes")
                 }

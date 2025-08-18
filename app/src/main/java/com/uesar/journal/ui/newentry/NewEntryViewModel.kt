@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.Date
 
 class NewEntryViewModel(
     private val repository: JournalRepository,
@@ -32,7 +31,7 @@ class NewEntryViewModel(
     fun onAction(action: NewEntryAction) {
         when (action) {
             is NewEntryAction.OnTitleChanged -> {
-                _state.update { it.copy(title = action.title) }
+                _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(title = action.title)) }
             }
 
             NewEntryAction.BottomSheetClosed -> {
@@ -50,11 +49,11 @@ class NewEntryViewModel(
             }
 
             is NewEntryAction.OnConfirmMoodClicked -> {
-                _state.update { it.copy(selectedMood = action.selectedMood) }
+                _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(mood = action.selectedMood)) }
             }
 
             NewEntryAction.OnCancelMoodBottomSheet -> {
-                _state.update { it.copy(currentSelectedMoodInBottomSheet = state.value.selectedMood) }
+                _state.update { it.copy(currentSelectedMoodInBottomSheet = state.value.journalEntryUIState.mood) }
             }
 
             NewEntryAction.OnAITranscribeButtonClicked -> {
@@ -62,13 +61,12 @@ class NewEntryViewModel(
             }
 
             NewEntryAction.StartPlaying -> {
-                audioPlayer.startPlayback(state.value.playback.audioPath)
+                audioPlayer.startPlayback(state.value.journalEntryUIState.audioPath)
                 viewModelScope.launch {
-                    audioPlayer.getCurrentPosition().collect { time ->
+                    audioPlayer.getCurrentPosition().collect { currentTime ->
                         _state.update {
                             it.copy(
-                                playback = state.value.playback.copy(
-                                    currentTime = formatSecondsToTime(time)
+                                journalEntryUIState = state.value.journalEntryUIState.copy(
                                     currentTime = formatSecondsToMinutes(currentTime)
                                 )
                             )
@@ -103,13 +101,13 @@ class NewEntryViewModel(
 
 
             is NewEntryAction.OnAddTopic -> {
-                if (!state.value.topics.contains(action.topic)) {
-                    _state.update { it.copy(topics = it.topics + action.topic) }
+                if (!state.value.journalEntryUIState.topics.contains(action.topic)) {
+                    _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(topics = it.journalEntryUIState.topics + action.topic)) }
                 }
             }
 
             is NewEntryAction.OnRemoveTopic -> {
-                _state.update { it.copy(topics = it.topics - action.topic) }
+                _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(topics = it.journalEntryUIState.topics - action.topic)) }
             }
 
             NewEntryAction.CloseNavigationDialog -> {
@@ -121,19 +119,19 @@ class NewEntryViewModel(
             }
 
             is NewEntryAction.OnDescriptionChanged -> {
-                _state.update { it.copy(description = action.description) }
+                _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(description = action.description)) }
             }
 
             NewEntryAction.SaveEntry -> {
                 viewModelScope.launch {
                     repository.insertJournalEntry(
                         JournalEntry(
-                            title = state.value.title,
-                            audioPath = state.value.playback.audioPath,
-                            mood = state.value.selectedMood!!,
-                            description = state.value.description,
-                            topics = state.value.topics,
-                            date = Date()
+                            title = state.value.journalEntryUIState.title,
+                            audioPath = state.value.journalEntryUIState.audioPath,
+                            mood = state.value.journalEntryUIState.mood!!,
+                            description = state.value.journalEntryUIState.description,
+                            topics = state.value.journalEntryUIState.topics,
+                            date = state.value.journalEntryUIState.date
                         )
                     )
                 }
@@ -151,13 +149,12 @@ class NewEntryViewModel(
     }
 
     fun setAudioPath(audioPath: String) {
-        _state.update { it.copy(playback = state.value.playback.copy(audioPath = audioPath)) }
+        _state.update { it.copy(journalEntryUIState = state.value.journalEntryUIState.copy(audioPath = audioPath)) }
         _state.update {
             it.copy(
-                playback = state.value.playback.copy(
-                    totalTime = formatSecondsToTime(
-                        audioPlayer.getDuration(File(audioPath))
+                journalEntryUIState = state.value.journalEntryUIState.copy(
                     totalTime = formatSecondsToMinutes(
+                        audioPlayer.getDurationInSeconds(File(audioPath))
                     )
                 )
             )
