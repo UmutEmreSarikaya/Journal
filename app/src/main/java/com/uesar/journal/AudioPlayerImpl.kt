@@ -20,6 +20,7 @@ class AudioPlayerImpl(private val context: Context) : AudioPlayer {
     override var filePath: String = ""
 
     override fun startPlayback(filePath: String) {
+        stopPlayback()
         this.filePath = filePath
         mediaPlayer = MediaPlayer.create(context, filePath.toUri())
         mediaPlayer?.apply {
