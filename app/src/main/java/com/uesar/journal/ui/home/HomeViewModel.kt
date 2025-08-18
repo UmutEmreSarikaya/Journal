@@ -7,6 +7,7 @@ import com.uesar.journal.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeEvent.*
+import com.uesar.journal.ui.model.mapper.toUIState
 import com.uesar.journal.ui.utils.formatSecondsToMinutes
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import java.io.File
 import java.util.Locale
 
 class HomeViewModel(
@@ -35,7 +37,23 @@ class HomeViewModel(
         }.launchIn(viewModelScope)
 
         repository.getJournalEntries().onEach { entries ->
-            _state.update { it.copy(journalEntries = entries) }
+            _state.update { it.copy(journalEntries = entries.map { it.toUIState() }) }
+            _state.update { state ->
+                state.copy(
+                    journalEntries = state.journalEntries.mapIndexed { index, journalEntry ->
+                        journalEntry.copy(
+                            totalTime = formatSecondsToMinutes(
+                                audioPlayer.getDurationInSeconds(
+                                    File(
+                                        entries[index].audioPath
+                                    )
+                                )
+                            )
+                        )
+                    }
+                )
+
+            }
         }.launchIn(viewModelScope)
 
         viewModelScope.launch {
