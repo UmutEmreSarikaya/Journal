@@ -30,8 +30,8 @@ class HomeViewModel(
     val events = eventChannel.receiveAsFlow()
 
     init {
-        audioRecorder.trackingTime.onEach { time ->
-            _state.update { it.copy(recordingTime = formatCounter(time)) }
+        audioRecorder.recordingTime.onEach { recordingTime ->
+            _state.update { it.copy(recordingTime = formatCounter(recordingTime)) }
         }.launchIn(viewModelScope)
 
         repository.getJournalEntries().onEach { entries ->

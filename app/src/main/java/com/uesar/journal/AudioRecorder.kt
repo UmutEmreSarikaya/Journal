@@ -6,7 +6,7 @@ import java.io.File
 
 interface AudioRecorder {
     val outputFile: File?
-    val trackingTime: StateFlow<Long>
+    val recordingTime: StateFlow<Long>
     fun startRecording(application: Application)
     fun stopRecording()
     fun pauseRecording()

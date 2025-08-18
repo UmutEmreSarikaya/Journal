@@ -20,7 +20,7 @@ class AudioRecorderImpl : AudioRecorder {
     private var isRecording = false
     private var isPaused = false
     private val _trackingTime = MutableStateFlow<Long>(0)
-    override val trackingTime = _trackingTime.asStateFlow()
+    override val recordingTime = _trackingTime.asStateFlow()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     override fun startRecording(application: Application) {
