@@ -20,8 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uesar.journal.R
-import com.uesar.journal.domain.JournalEntry
+import com.uesar.journal.moods
+import com.uesar.journal.ui.PlayerState
 import com.uesar.journal.ui.components.AudioPlayerUI
+import com.uesar.journal.ui.model.JournalEntryUIState
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.OnSurfaceVariant
@@ -29,17 +31,18 @@ import com.uesar.journal.ui.theme.OutlineVariant
 import com.uesar.journal.ui.theme.Surface
 import com.uesar.journal.ui.theme.smallPadding
 import com.uesar.journal.ui.theme.standardPadding
+import java.util.Date
 
 @Composable
 fun JournalEntryRow(
     modifier: Modifier = Modifier,
-    journalEntry: JournalEntry,
-    startPlaying: () -> Unit,
-    resumePlaying: () -> Unit,
-    pausePlaying: () -> Unit,
-    currentTime: String,
-    totalTime: String,
-    isPlaying: Boolean
+    journalEntry: JournalEntryUIState,
+    startPlaying: () -> Unit = {},
+    resumePlaying: () -> Unit = {},
+    pausePlaying: () -> Unit = {},
+    currentTime: String = "00:00",
+    totalTime: String = "00:00",
+    playerState: PlayerState = PlayerState.Idle
 ) {
     Row(modifier = modifier) {
         Image(painter = painterResource(R.drawable.excited), contentDescription = null)
@@ -56,12 +59,13 @@ fun JournalEntryRow(
                     startPlaying = {startPlaying()},
                     resumePlaying = {resumePlaying()},
                     pausePlaying = {pausePlaying()},
-                    isPlaying = isPlaying,
                     currentTime = currentTime,
-                    totalTime = totalTime
+                    totalTime = totalTime,
+                    playerState = playerState
                 )
                 FlowRow {
-                    journalEntry.topics.forEach { topic ->
+
+                    journalEntry.topics.sortedByDescending { it.length }.forEach { topic ->
                         InputChip(
                             modifier = Modifier.padding(end = smallPadding),
                             colors = InputChipDefaults.inputChipColors(
@@ -99,20 +103,14 @@ private fun JournalEntryRowPreview() {
     JournalTheme {
         JournalEntryRow(
             modifier = Modifier.fillMaxWidth(),
-            journalEntry = JournalEntry(
+            journalEntry = JournalEntryUIState(
                 title = "My Entry",
                 topics = listOf("topic 1", "topic 2"),
                 description = "This is a description",
-                audioPath = TODO(),
-                mood = TODO(),
-                date = TODO()
-            ),
-            startPlaying = {},
-            resumePlaying = {},
-            pausePlaying = {},
-            "00:00",
-            "00:00",
-            isPlaying = false
+                audioPath = "",
+                mood = moods.first(),
+                date = Date()
+            )
         )
     }
 }
@@ -123,20 +121,14 @@ private fun JournalEntryRowMultipleTopicsPreview() {
     JournalTheme {
         JournalEntryRow(
             modifier = Modifier.fillMaxWidth(),
-            journalEntry = JournalEntry(
+            journalEntry = JournalEntryUIState(
                 title = "My Entry",
-                topics = listOf("topic 1", "topic 2"),
+                topics = listOf("topic 1", "topic 2", "topic 3 topic 3", "topic 4", "topic 5", "topic 6"),
                 description = "This is a description",
-                audioPath = TODO(),
-                mood = TODO(),
-                date = TODO()
-            ),
-            startPlaying = {},
-            resumePlaying = {},
-            pausePlaying = {},
-            "00:00",
-            "00:00",
-            isPlaying = false
+                audioPath = "",
+                mood = moods.first(),
+                date = Date()
+            )
         )
     }
 }
