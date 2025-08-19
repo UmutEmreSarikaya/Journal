@@ -63,8 +63,7 @@ fun JournalEntryRow(
                     totalTime = totalTime,
                     playerState = playerState
                 )
-                FlowRow {
-
+                FlowRow(modifier = Modifier.fillMaxWidth()) {
                     journalEntry.topics.sortedByDescending { it.length }.forEach { topic ->
                         InputChip(
                             modifier = Modifier.padding(end = smallPadding),
