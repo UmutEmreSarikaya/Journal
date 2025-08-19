@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.uesar.journal.Mood
 import com.uesar.journal.R
 import com.uesar.journal.moods
-import com.uesar.journal.ui.components.MoodIcon
+import com.uesar.journal.ui.components.MoodSelectorRow
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.OnPrimary
 import com.uesar.journal.ui.theme.Primary
@@ -39,20 +39,7 @@ fun MoodSelectorBottomSheet(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(stringResource(R.string.how_are_you_doing))
-        Row(
-            modifier = Modifier
-                .padding(top = largePadding)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            moods.forEach { mood ->
-                val moodIcon = if (mood == selectedMood) mood.icon else mood.emptyIcon
-                MoodIcon(
-                    moodIcon = moodIcon,
-                    name = mood.name,
-                    onMoodClicked = { onMoodIconClicked(mood) })
-            }
-        }
+        MoodSelectorRow(modifier = Modifier.padding(top = largePadding), selectedMood = selectedMood, onMoodClicked = onMoodIconClicked)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
