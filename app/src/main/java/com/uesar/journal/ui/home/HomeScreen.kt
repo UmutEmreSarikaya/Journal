@@ -100,7 +100,7 @@ private fun HomeScreen(
             if (state.journalEntries.isEmpty()) {
                 NoEntries()
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(standardPadding)) {
                     items(state.journalEntries) { entry ->
                         JournalEntryRow(
                             journalEntry = entry,
