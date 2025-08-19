@@ -7,4 +7,7 @@
     <string name="add_description">Add Description…</string>
     <string name="create">Create \'%1$s\'</string>
     <string name="remove_topic">Remove Topic</string>
+    <string name="my_mood">My Mood</string>
+    <string name="select_default_mood">Select default mood to apply to new entries</string>
+    <string name="my_topics">My Topics</string>
 </resources>
