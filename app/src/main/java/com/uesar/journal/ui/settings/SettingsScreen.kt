@@ -60,7 +60,7 @@ private fun SettingsScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(standardPadding)
+                .padding(horizontal = standardPadding)
         ) {
             Text(
                 "text"

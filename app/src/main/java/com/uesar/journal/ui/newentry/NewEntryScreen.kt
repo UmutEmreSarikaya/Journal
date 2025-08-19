@@ -50,14 +50,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.uesar.journal.R
 import com.uesar.journal.ui.components.AudioPlayerUI
 import com.uesar.journal.ui.newentry.components.MoodSelectorBottomSheet
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.OnPrimary
-import com.uesar.journal.ui.theme.OnSurfaceVariant
 import com.uesar.journal.ui.theme.OutlineVariant
 import com.uesar.journal.ui.theme.Primary
 import com.uesar.journal.ui.theme.PrimaryContainer
@@ -114,7 +112,7 @@ private fun NewEntryScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(standardPadding)
+                .padding(horizontal = standardPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
@@ -126,7 +124,9 @@ private fun NewEntryScreen(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) { onAction(NewEntryAction.OnChangeMoodClicked) },
-                    painter = painterResource(state.journalEntryUIState.mood?.icon ?: R.drawable.change_mood),
+                    painter = painterResource(
+                        state.journalEntryUIState.mood?.icon ?: R.drawable.change_mood
+                    ),
                     contentDescription = null
                 )
                 OutlinedTextField(
@@ -302,7 +302,7 @@ private fun NewEntryScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = standardPadding),
+                    .padding(bottom = standardPadding),
                 horizontalArrangement = Arrangement.spacedBy(standardPadding)
             ) {
                 Button(
@@ -314,12 +314,15 @@ private fun NewEntryScreen(
                     )
                 }
                 Button(
-                    modifier = Modifier.weight(3F), colors = ButtonDefaults.buttonColors(
+                    modifier = Modifier.weight(3F),
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = PrimaryContainer, contentColor = OnPrimary
-                    ), onClick = {
+                    ),
+                    onClick = {
                         onAction(NewEntryAction.SaveEntry)
                         onAction(NewEntryAction.NavigateBack)
-                    }, enabled = state.journalEntryUIState.mood != null && state.journalEntryUIState.title.isNotEmpty()
+                    },
+                    enabled = state.journalEntryUIState.mood != null && state.journalEntryUIState.title.isNotEmpty()
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(

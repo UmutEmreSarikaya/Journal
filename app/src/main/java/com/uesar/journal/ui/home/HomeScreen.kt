@@ -92,7 +92,7 @@ private fun HomeScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(standardPadding)
+                .padding(horizontal = standardPadding)
                 .fillMaxSize(),
             verticalArrangement = if (state.journalEntries.isEmpty()) Arrangement.Center else Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
