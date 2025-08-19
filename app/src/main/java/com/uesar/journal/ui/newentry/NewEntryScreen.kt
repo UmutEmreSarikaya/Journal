@@ -133,6 +133,7 @@ private fun NewEntryScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = state.journalEntryUIState.title,
                     onValueChange = { onAction(NewEntryAction.OnTitleChanged(it)) },
+                    singleLine = true,
                     placeholder = { Text("Add Title...") },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedPlaceholderColor = OutlineVariant,
