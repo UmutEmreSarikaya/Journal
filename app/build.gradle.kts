@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.uesar.journal"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.uesar.journal"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
