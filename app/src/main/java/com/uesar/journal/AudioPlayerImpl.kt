@@ -68,8 +68,7 @@ class AudioPlayerImpl(private val context: Context) : AudioPlayer {
     override fun getCurrentPosition(): Flow<Int> = flow {
         while (mediaPlayer != null) {
             emit((mediaPlayer?.currentPosition ?: 0) / 1000)
-            delay(500)
+            delay(10)
         }
     }
-
 }
