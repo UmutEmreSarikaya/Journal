@@ -8,7 +8,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,21 +15,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.InputChip
-import androidx.compose.material3.InputChipDefaults
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -169,114 +160,6 @@ private fun NewEntryScreen(
                         contentDescription = null,
                         tint = Color.Black
                     )
-                }
-            }
-
-            FlowRow(
-                modifier = Modifier.padding(top = standardPadding),
-                itemVerticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.size(16.dp),
-                    text = "#",
-                    color = OutlineVariant,
-                    fontSize = 16.sp
-                )
-                state.journalEntryUIState.topics.forEach {
-                    InputChip(
-                        modifier = Modifier.padding(end = smallPadding),
-                        colors = InputChipDefaults.inputChipColors(
-                            containerColor = InverseOnSurface,
-                            labelColor = OnSurfaceVariant,
-                            selectedContainerColor = InverseOnSurface
-                        ),
-                        shape = RoundedCornerShape(999.dp),
-                        onClick = { onAction(NewEntryAction.OnRemoveTopic(it)) },
-                        label = {
-                            Text(
-                                text = it
-                            )
-                        },
-                        selected = true,
-                        leadingIcon = {
-                            Text(
-                                modifier = Modifier.size(16.dp),
-                                text = "#",
-                                color = OutlineVariant,
-                                fontSize = 16.sp
-                            )
-                        },
-                        trailingIcon = {
-                            Icon(
-                                modifier = Modifier
-                                    .size(16.dp)
-                                    .clickable {
-                                        onAction(
-                                            NewEntryAction.OnRemoveTopic(
-                                                it
-                                            )
-                                        )
-                                    },
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.remove_topic),
-                                tint = OnSurfaceVariant.copy(alpha = 0.3f),
-                            )
-                        },
-                    )
-                }
-                ExposedDropdownMenuBox(
-                    expanded = state.topicText.isNotEmpty(), onExpandedChange = {}) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .menuAnchor(
-                                MenuAnchorType.PrimaryEditable, true
-                            )
-                            .weight(1F),
-                        singleLine = true,
-                        value = state.topicText,
-                        onValueChange = {
-                            onAction(NewEntryAction.OnTopicChanged(it))
-                            if (state.topicText.isNotEmpty()) {
-                                onAction(NewEntryAction.OpenTopicDropDown)
-                            } else {
-                                onAction(NewEntryAction.CloseTopicDropDown)
-                            }
-                        },
-                        placeholder = { Text(stringResource(R.string.add_topic)) },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedPlaceholderColor = OutlineVariant,
-                            focusedPlaceholderColor = OutlineVariant,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
-                        )
-                    )
-
-                    ExposedDropdownMenu(
-                        expanded = state.isTopicDropDownOpen,
-                        onDismissRequest = { onAction(NewEntryAction.CloseTopicDropDown) }) {
-                        state.journalEntryUIState.topics.forEach {
-                            DropdownMenuItem(leadingIcon = {
-                                Text(
-                                    modifier = Modifier
-                                        .size(18.dp)
-                                        .padding(start = 4.dp),
-                                    text = "#",
-                                    color = OutlineVariant,
-                                    fontSize = 16.sp
-                                )
-                            }, text = { Text(it) }, onClick = { /*TODO*/ })
-                        }
-                        DropdownMenuItem(
-                            leadingIcon = {
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                painter = painterResource(R.drawable.add),
-                                contentDescription = null
-                            )
-                        },
-                            text = { Text(stringResource(R.string.create, state.topicText)) },
-                            onClick = { onAction(NewEntryAction.OnAddTopic(state.topicText)) })
-                    }
                 }
             }
 
