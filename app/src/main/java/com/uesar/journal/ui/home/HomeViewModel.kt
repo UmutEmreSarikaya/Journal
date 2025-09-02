@@ -3,7 +3,7 @@ package com.uesar.journal.ui.home
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uesar.journal.domain.audio.AudioPlayer
+import com.uesar.journal.domain.player.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeEvent.*

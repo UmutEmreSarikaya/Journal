@@ -1,4 +1,4 @@
-package com.uesar.journal.domain.audio
+package com.uesar.journal.domain.player
 
 import com.uesar.journal.ui.PlayerState
 import kotlinx.coroutines.flow.Flow
