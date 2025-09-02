@@ -40,8 +40,8 @@ fun JournalEntryRow(
     startPlaying: () -> Unit = {},
     resumePlaying: () -> Unit = {},
     pausePlaying: () -> Unit = {},
-    currentTime: String = "00:00",
-    totalTime: String = "00:00",
+    currentTime: Int = 0,
+    totalTime: Int = 0,
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(modifier = modifier) {

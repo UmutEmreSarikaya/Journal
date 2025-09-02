@@ -51,12 +51,12 @@ class AudioPlayerImpl(private val context: Context) : AudioPlayer {
         _playerState.value = PlayerState.Idle
     }
 
-    override fun getDurationInSeconds(file: File): Int {
+    override fun getDuration(file: File): Int {
         val retriever = MediaMetadataRetriever()
         return try {
             retriever.setDataSource(context, file.toUri())
             val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-            duration?.toInt()?.div(1000) ?: 0
+            duration?.toInt() ?: 0
         } catch (e: Exception) {
             e.printStackTrace()
             -1

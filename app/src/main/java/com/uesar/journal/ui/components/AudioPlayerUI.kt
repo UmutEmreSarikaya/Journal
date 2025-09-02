@@ -32,8 +32,8 @@ fun AudioPlayerUI(
     startPlaying: () -> Unit,
     resumePlaying: () -> Unit,
     pausePlaying: () -> Unit,
-    currentTime: String,
-    totalTime: String,
+    currentTime: Int,
+    totalTime: Int,
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(
@@ -68,14 +68,13 @@ fun AudioPlayerUI(
             )
         }
         LinearProgressIndicator(
-            modifier = Modifier
-                .padding(horizontal = standardPadding)
-                .weight(1F),
-
+        progress = { currentTime.toFloat() / totalTime.toFloat() },
+        modifier = Modifier.padding(horizontal = standardPadding).weight(1F),
+        strokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap,
         )
         Text(
             modifier = Modifier.padding(end = standardPadding),
-            text = "${currentTime}/${totalTime}"
+            text = "${formatSecondsToMinutes(currentTime / 1000)}/${formatSecondsToMinutes(totalTime / 1000)}"
         )
     }
 }
@@ -88,8 +87,8 @@ private fun AudioPlayerUIPreview() {
             startPlaying = {},
             resumePlaying = {},
             pausePlaying = {},
-            currentTime = "00:00",
-            totalTime = "00:00"
+            currentTime = 0,
+            totalTime = 0
         )
     }
 }

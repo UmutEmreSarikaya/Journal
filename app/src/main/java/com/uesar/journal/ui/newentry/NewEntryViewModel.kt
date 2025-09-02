@@ -67,7 +67,7 @@ class NewEntryViewModel(
                         _state.update {
                             it.copy(
                                 journalEntryUIState = state.value.journalEntryUIState.copy(
-                                    currentTime = formatSecondsToMinutes(currentTime)
+                                    currentTime = currentTime
                                 )
                             )
                         }
@@ -153,9 +153,7 @@ class NewEntryViewModel(
         _state.update {
             it.copy(
                 journalEntryUIState = state.value.journalEntryUIState.copy(
-                    totalTime = formatSecondsToMinutes(
-                        audioPlayer.getDurationInSeconds(File(audioPath))
-                    )
+                    totalTime = audioPlayer.getDuration(File(audioPath))
                 )
             )
         }

@@ -46,11 +46,9 @@ class HomeViewModel(
                 state.copy(
                     journalEntries = state.journalEntries.mapIndexed { index, journalEntry ->
                         journalEntry.copy(
-                            totalTime = formatSecondsToMinutes(
-                                audioPlayer.getDurationInSeconds(
-                                    File(
-                                        entries[index].audioPath
-                                    )
+                            totalTime = audioPlayer.getDuration(
+                                File(
+                                    entries[index].audioPath
                                 )
                             )
                         )
@@ -119,11 +117,12 @@ class HomeViewModel(
                 audioPlayer.startPlayback(action.audioPath)
                 positionJob = viewModelScope.launch {
                     audioPlayer.getCurrentPosition().collect { currentTime ->
-                        val index = state.value.journalEntries.indexOfFirst { it.audioPath == action.audioPath }
+                        val index =
+                            state.value.journalEntries.indexOfFirst { it.audioPath == action.audioPath }
 
                         val updatedEntries = state.value.journalEntries.toMutableList()
                         updatedEntries[index] = updatedEntries[index].copy(
-                            currentTime = formatSecondsToMinutes(currentTime)
+                            currentTime = currentTime
                         )
                         _state.update { state ->
                             state.copy(journalEntries = updatedEntries)
@@ -154,9 +153,8 @@ class HomeViewModel(
 
     private fun formatCounter(counterInMillis: Long): String {
         val totalSeconds = counterInMillis / 1000
-        val hours = totalSeconds / 3600
         val minutes = (totalSeconds % 3600) / 60
         val seconds = totalSeconds % 60
-        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
     }
 } 

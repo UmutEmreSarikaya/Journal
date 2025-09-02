@@ -12,6 +12,6 @@ interface AudioPlayer {
     fun pausePlayback()
     fun resumePlayback()
     fun stopPlayback()
-    fun getDurationInSeconds(file: File): Int
+    fun getDuration(file: File): Int
     fun getCurrentPosition(): Flow<Int>
 }
