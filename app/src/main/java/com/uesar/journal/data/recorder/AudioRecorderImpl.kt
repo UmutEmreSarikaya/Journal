@@ -1,8 +1,9 @@
-package com.uesar.journal
+package com.uesar.journal.data.recorder
 
 import android.app.Application
 import android.media.MediaRecorder
 import android.os.Build
+import com.uesar.journal.domain.recorder.AudioRecorder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
