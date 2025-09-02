@@ -88,7 +88,7 @@ private fun NewEntryScreen(
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         CenterAlignedTopAppBar(title = {
-            Text("New Entry")
+            Text(stringResource(R.string.new_entry))
         }, navigationIcon = {
             IconButton(onClick = { onAction(NewEntryAction.OpenNavigationDialog) }) {
                 Icon(
@@ -125,7 +125,7 @@ private fun NewEntryScreen(
                     value = state.journalEntryUIState.title,
                     onValueChange = { onAction(NewEntryAction.OnTitleChanged(it)) },
                     singleLine = true,
-                    placeholder = { Text("Add Title...") },
+                    placeholder = { Text(stringResource(R.string.add_title)) },
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedPlaceholderColor = OutlineVariant,
                         focusedBorderColor = Color.Transparent,
@@ -252,8 +252,8 @@ private fun NewEntryScreen(
     if (state.isNavigationDialogOpen) {
         AlertDialog(
             onDismissRequest = { onAction(NewEntryAction.CloseNavigationDialog) },
-            title = { Text("Are you sure?") },
-            text = { Text("Do you want to go back? Unsaved changes may be lost.") },
+            title = { Text(stringResource(R.string.are_you_sure)) },
+            text = { Text(stringResource(R.string.do_you_want_to_go_back)) },
             confirmButton = {
                 Button(onClick = {
                     onAction(NewEntryAction.CloseNavigationDialog)
@@ -261,14 +261,14 @@ private fun NewEntryScreen(
                     onAction(NewEntryAction.NavigateBack)
                     onAction(NewEntryAction.DeleteAudioFile(state.journalEntryUIState.audioPath))
                 }) {
-                    Text("Yes")
+                    Text(stringResource(R.string.yes))
                 }
             },
             dismissButton = {
                 Button(onClick = {
                     onAction(NewEntryAction.CloseNavigationDialog)
                 }) {
-                    Text("No")
+                    Text(stringResource(R.string.no))
                 }
             })
     }

@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.res.stringResource
 import com.uesar.journal.R
 import com.uesar.journal.ui.ObserveAsEvents
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
@@ -73,7 +74,7 @@ private fun HomeScreen(
     val sheetState = rememberModalBottomSheetState()
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
-            Text("Your EchoJournal")
+            Text(stringResource(R.string.your_journal))
         }, actions = {
             IconButton(onClick = { onAction(HomeAction.SettingsClicked) }) {
                 Icon(painter = painterResource(R.drawable.settings), contentDescription = null)
