@@ -1,6 +1,6 @@
 package com.uesar.journal.domain.settings
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsPreferences {

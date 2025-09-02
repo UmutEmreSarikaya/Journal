@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import com.uesar.journal.R
-import com.uesar.journal.moods
+import com.uesar.journal.domain.mood.moods
 import com.uesar.journal.ui.components.MoodSelectorRow
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.OnPrimary

@@ -1,6 +1,6 @@
 package com.uesar.journal.ui.newentry
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import com.uesar.journal.ui.model.JournalEntryUIState
 
 data class NewEntryState(

@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uesar.journal.R
-import com.uesar.journal.moods
+import com.uesar.journal.domain.mood.moods
 import com.uesar.journal.ui.PlayerState
 import com.uesar.journal.ui.components.AudioPlayerUI
 import com.uesar.journal.ui.model.JournalEntryUIState

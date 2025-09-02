@@ -1,6 +1,6 @@
 package com.uesar.journal.ui.newentry
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 
 sealed interface NewEntryAction {
     data class OnTitleChanged(val title: String) : NewEntryAction

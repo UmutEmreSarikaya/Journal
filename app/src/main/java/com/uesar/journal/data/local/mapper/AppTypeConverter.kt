@@ -1,8 +1,7 @@
 package com.uesar.journal.data.local.mapper
 
 import androidx.room.TypeConverter
-import com.uesar.journal.Mood
-import kotlinx.serialization.encodeToString
+import com.uesar.journal.domain.mood.Mood
 import kotlinx.serialization.json.Json
 import java.util.Date
 

@@ -5,9 +5,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import com.uesar.journal.domain.settings.SettingsPreferences
-import com.uesar.journal.moods
+import com.uesar.journal.domain.mood.moods
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map

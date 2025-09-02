@@ -1,6 +1,7 @@
-package com.uesar.journal
+package com.uesar.journal.domain.mood
 
 import androidx.annotation.DrawableRes
+import com.uesar.journal.R
 import kotlinx.serialization.Serializable
 
 @Serializable

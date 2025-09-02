@@ -1,6 +1,6 @@
 package com.uesar.journal.ui.model
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import com.uesar.journal.ui.PlayerState
 import java.util.Date
 

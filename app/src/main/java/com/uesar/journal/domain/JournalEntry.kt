@@ -1,6 +1,6 @@
 package com.uesar.journal.domain
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import java.util.Date
 
 data class JournalEntry(

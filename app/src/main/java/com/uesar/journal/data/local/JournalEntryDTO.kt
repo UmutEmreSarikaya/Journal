@@ -2,7 +2,7 @@ package com.uesar.journal.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 import java.util.Date
 
 @Entity

@@ -1,6 +1,6 @@
 package com.uesar.journal.ui.settings
 
-import com.uesar.journal.Mood
+import com.uesar.journal.domain.mood.Mood
 
 sealed interface SettingsAction {
     data object NavigateBack : SettingsAction
