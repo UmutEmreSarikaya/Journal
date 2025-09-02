@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import com.uesar.journal.ui.PlayerState
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
+import com.uesar.journal.ui.utils.formatSecondsToMinutes
 
 @Composable
 fun AudioPlayerUI(
