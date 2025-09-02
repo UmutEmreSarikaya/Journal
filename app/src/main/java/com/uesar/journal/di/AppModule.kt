@@ -9,6 +9,7 @@ import com.uesar.journal.data.player.AudioPlayerImpl
 import com.uesar.journal.domain.player.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.AudioRecorderImpl
+import com.uesar.journal.domain.recorder.AudioRecorder
 import com.uesar.journal.data.local.AppDatabase
 import com.uesar.journal.data.local.JournalEntryDao
 import com.uesar.journal.data.local.JournalRepositoryImpl

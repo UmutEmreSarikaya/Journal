@@ -1,4 +1,4 @@
-package com.uesar.journal
+package com.uesar.journal.domain.recorder
 
 import android.app.Application
 import kotlinx.coroutines.flow.StateFlow
