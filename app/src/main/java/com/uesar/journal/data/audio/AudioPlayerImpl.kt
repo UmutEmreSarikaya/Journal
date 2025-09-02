@@ -1,4 +1,4 @@
-package com.uesar.journal
+package com.uesar.journal.data.audio
 
 import android.content.Context
 import android.media.MediaMetadataRetriever
