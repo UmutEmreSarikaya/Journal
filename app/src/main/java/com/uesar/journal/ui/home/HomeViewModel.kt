@@ -8,7 +8,6 @@ import com.uesar.journal.AudioRecorder
 import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.ui.home.HomeEvent.*
 import com.uesar.journal.ui.model.mapper.toUIState
-import com.uesar.journal.ui.utils.formatSecondsToMinutes
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,25 +53,23 @@ class HomeViewModel(
                         )
                     }
                 )
-
             }
         }.launchIn(viewModelScope)
 
-        viewModelScope.launch {
-            audioPlayer.playerState.collect { playerState ->
-                _state.update { state ->
-                    val idx = state.journalEntries.indexOfFirst { it.audioPath == audioPlayer.filePath }
-                    if (idx == -1) return@update state
+        audioPlayer.playerState.onEach { playerState ->
+            _state.update { state ->
+                val idx =
+                    state.journalEntries.indexOfFirst { it.audioPath == audioPlayer.filePath }
+                if (idx == -1) return@update state
 
-                    val updatedEntries = state.journalEntries.toMutableList()
-                    updatedEntries[idx] = updatedEntries[idx].copy(
-                        playerState = playerState
-                    )
+                val updatedEntries = state.journalEntries.toMutableList()
+                updatedEntries[idx] = updatedEntries[idx].copy(
+                    playerState = playerState
+                )
 
-                    state.copy(journalEntries = updatedEntries)
-                }
+                state.copy(journalEntries = updatedEntries)
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun onAction(action: HomeAction) {

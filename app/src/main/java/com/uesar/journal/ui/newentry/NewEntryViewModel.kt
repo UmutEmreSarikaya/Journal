@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.uesar.journal.AudioPlayer
 import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.domain.JournalRepository
-import com.uesar.journal.ui.utils.formatSecondsToMinutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
@@ -21,11 +22,15 @@ class NewEntryViewModel(
     val state: StateFlow<NewEntryState> = _state.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            audioPlayer.playerState.collect { playerState ->
-                _state.update { it.copy(journalEntryUIState = state.value.journalEntryUIState.copy(playerState = playerState)) }
+        audioPlayer.playerState.onEach { playerState ->
+            _state.update {
+                it.copy(
+                    journalEntryUIState = state.value.journalEntryUIState.copy(
+                        playerState = playerState
+                    )
+                )
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun onAction(action: NewEntryAction) {
@@ -119,7 +124,13 @@ class NewEntryViewModel(
             }
 
             is NewEntryAction.OnDescriptionChanged -> {
-                _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(description = action.description)) }
+                _state.update {
+                    it.copy(
+                        journalEntryUIState = it.journalEntryUIState.copy(
+                            description = action.description
+                        )
+                    )
+                }
             }
 
             NewEntryAction.SaveEntry -> {
