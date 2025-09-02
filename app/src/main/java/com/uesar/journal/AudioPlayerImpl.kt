@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import androidx.core.net.toUri
+import com.uesar.journal.domain.audio.AudioPlayer
 import com.uesar.journal.ui.PlayerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

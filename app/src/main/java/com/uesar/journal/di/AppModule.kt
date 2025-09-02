@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.uesar.journal.AudioPlayerImpl
-import com.uesar.journal.AudioPlayer
+import com.uesar.journal.domain.audio.AudioPlayer
 import com.uesar.journal.AudioRecorder
 import com.uesar.journal.AudioRecorderImpl
 import com.uesar.journal.data.local.AppDatabase

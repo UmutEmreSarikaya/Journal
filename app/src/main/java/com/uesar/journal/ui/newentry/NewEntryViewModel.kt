@@ -2,7 +2,7 @@ package com.uesar.journal.ui.newentry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.uesar.journal.AudioPlayer
+import com.uesar.journal.domain.audio.AudioPlayer
 import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.domain.JournalRepository
 import kotlinx.coroutines.flow.MutableStateFlow
