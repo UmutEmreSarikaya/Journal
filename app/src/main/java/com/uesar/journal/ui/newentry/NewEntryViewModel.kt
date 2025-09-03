@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.uesar.journal.domain.player.AudioPlayer
 import com.uesar.journal.domain.JournalEntry
 import com.uesar.journal.domain.JournalRepository
+import com.uesar.journal.domain.settings.SettingsPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import java.io.File
 
 class NewEntryViewModel(
     private val repository: JournalRepository,
-    private val audioPlayer: AudioPlayer
+    private val audioPlayer: AudioPlayer,
+    settingsPreferences: SettingsPreferences
 ) : ViewModel() {
     private val _state = MutableStateFlow(NewEntryState())
     val state: StateFlow<NewEntryState> = _state.asStateFlow()
@@ -30,6 +32,10 @@ class NewEntryViewModel(
                     )
                 )
             }
+        }.launchIn(viewModelScope)
+
+        settingsPreferences.observeDefaultMood().onEach { mood ->
+            _state.update { it.copy(journalEntryUIState = it.journalEntryUIState.copy(mood = mood), currentSelectedMoodInBottomSheet = mood) }
         }.launchIn(viewModelScope)
     }
 
