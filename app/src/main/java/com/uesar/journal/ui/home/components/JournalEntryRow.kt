@@ -58,7 +58,7 @@ fun JournalEntryRow(
             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         ) {
             Column(modifier = Modifier.padding(standardPadding)) {
-                Row { Text(text = journalEntry.title, style = MaterialTheme.typography.titleMedium) }
+                Row { Text(text = journalEntry.title, style = MaterialTheme.typography.titleSmall) }
                 AudioPlayerUI(
                     modifier = Modifier.padding(top = smallPadding),
                     startPlaying = {startPlaying()},
