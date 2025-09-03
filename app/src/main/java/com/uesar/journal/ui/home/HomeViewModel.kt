@@ -105,6 +105,7 @@ class HomeViewModel(
             HomeAction.SaveRecording -> {
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.stopRecording()
+                audioPlayer.stopPlayback()
                 eventChannel.trySend(AudioRecorded("${application.cacheDir.absolutePath}/${audioRecorder.outputFile?.name}"))
             }
 
