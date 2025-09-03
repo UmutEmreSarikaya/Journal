@@ -70,7 +70,7 @@ private fun SettingsScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = standardPadding)
+                .padding(standardPadding)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(standardPadding)
         ) {
