@@ -29,6 +29,7 @@ import com.uesar.journal.ui.ObserveAsEvents
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
 import com.uesar.journal.ui.home.components.JournalEntryRow
 import com.uesar.journal.ui.home.components.NoEntries
+import com.uesar.journal.ui.theme.smallPadding
 import com.uesar.journal.ui.theme.standardPadding
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -101,9 +102,10 @@ private fun HomeScreen(
             if (state.journalEntries.isEmpty()) {
                 NoEntries()
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(standardPadding)) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(state.journalEntries) { entry ->
                         JournalEntryRow(
+                            modifier = Modifier.padding(vertical = smallPadding),
                             journalEntry = entry,
                             startPlaying = {onAction(HomeAction.StartPlaying(entry.audioPath))},
                             resumePlaying = {onAction(HomeAction.ResumePlaying)},
