@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -57,7 +58,7 @@ fun JournalEntryRow(
             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         ) {
             Column(modifier = Modifier.padding(standardPadding)) {
-                Row { Text(journalEntry.title) }
+                Row { Text(text = journalEntry.title, style = MaterialTheme.typography.titleMedium) }
                 AudioPlayerUI(
                     modifier = Modifier.padding(top = smallPadding),
                     startPlaying = {startPlaying()},
@@ -94,7 +95,7 @@ fun JournalEntryRow(
                             })
                     }
                 }
-                Text(journalEntry.description)
+                Text(modifier = Modifier.padding(top = smallPadding), text = journalEntry.description,  style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

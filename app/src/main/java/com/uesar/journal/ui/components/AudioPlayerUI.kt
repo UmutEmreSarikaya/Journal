@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,7 +77,8 @@ fun AudioPlayerUI(
         )
         Text(
             modifier = Modifier.padding(end = standardPadding),
-            text = "${formatSecondsToMinutes(currentTime / 1000)}/${formatSecondsToMinutes(totalTime / 1000)}"
+            text = "${formatSecondsToMinutes(currentTime / 1000)}/${formatSecondsToMinutes(totalTime / 1000)}",
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
