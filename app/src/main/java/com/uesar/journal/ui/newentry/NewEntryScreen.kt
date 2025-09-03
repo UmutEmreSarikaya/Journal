@@ -138,30 +138,21 @@ private fun NewEntryScreen(
                 playerState = state.journalEntryUIState.playerState
             )
 
-
-            Row(
+            OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(smallPadding)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.mode_edit_outline),
-                    tint = OutlineVariant,
-                    contentDescription = stringResource(R.string.add_description)
+                value = state.journalEntryUIState.description,
+                onValueChange = { onAction(NewEntryAction.OnDescriptionChanged(it)) },
+                placeholder = { Text(stringResource(R.string.add_description)) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedPlaceholderColor = OutlineVariant,
+                    focusedPlaceholderColor = OutlineVariant,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
                 )
-                OutlinedTextField(
-                    value = state.journalEntryUIState.description,
-                    onValueChange = { onAction(NewEntryAction.OnDescriptionChanged(it)) },
-                    placeholder = { Text(stringResource(R.string.add_description)) },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        unfocusedPlaceholderColor = OutlineVariant,
-                        focusedPlaceholderColor = OutlineVariant,
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    )
-                )
-            }
+            )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -246,10 +237,12 @@ private fun NewEntryScreen(
                 }
             },
             dismissButton = {
-                Button(colors = ButtonDefaults.buttonColors(containerColor = PrimaryContainer), onClick = {
-                    onAction(NewEntryAction.CloseNavigationDialog)
-                }) {
-                    Text(color = OnPrimary,text = stringResource(R.string.no))
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryContainer),
+                    onClick = {
+                        onAction(NewEntryAction.CloseNavigationDialog)
+                    }) {
+                    Text(color = OnPrimary, text = stringResource(R.string.no))
                 }
             })
     }
