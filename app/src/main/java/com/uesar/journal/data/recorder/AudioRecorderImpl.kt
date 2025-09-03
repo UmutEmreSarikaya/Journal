@@ -20,8 +20,8 @@ class AudioRecorderImpl : AudioRecorder {
     private var durationJob: Job? = null
     private var isRecording = false
     private var isPaused = false
-    private val _trackingTime = MutableStateFlow<Long>(0)
-    override val recordingTime = _trackingTime.asStateFlow()
+    private val _recordingTime = MutableStateFlow<Long>(0)
+    override val recordingTime = _recordingTime.asStateFlow()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     override fun startRecording(application: Application) {
@@ -53,7 +53,7 @@ class AudioRecorderImpl : AudioRecorder {
         }
         mediaRecorder = null
         isRecording = false
-        _trackingTime.value = 0
+        _recordingTime.value = 0
     }
 
     override fun pauseRecording() {
@@ -89,7 +89,7 @@ class AudioRecorderImpl : AudioRecorder {
             outputFile = null
         }
         isRecording = false
-        _trackingTime.value = 0
+        _recordingTime.value = 0
     }
 
     private fun startTrackingDuration() {
@@ -99,7 +99,7 @@ class AudioRecorderImpl : AudioRecorder {
                 delay(10L)
                 val currentTime = System.currentTimeMillis()
                 val elapsedTime = currentTime - lastTime
-                _trackingTime.value += elapsedTime
+                _recordingTime.value += elapsedTime
                 lastTime = System.currentTimeMillis()
             }
         }
