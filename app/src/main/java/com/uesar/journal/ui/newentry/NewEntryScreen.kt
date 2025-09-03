@@ -7,7 +7,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -139,14 +138,19 @@ private fun NewEntryScreen(
                 playerState = state.journalEntryUIState.playerState
             )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(smallPadding)
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.mode_edit_outline),
                     tint = OutlineVariant,
-                    contentDescription = null
+                    contentDescription = stringResource(R.string.add_description)
                 )
                 OutlinedTextField(
-                    modifier = Modifier.weight(1F),
                     value = state.journalEntryUIState.description,
                     onValueChange = { onAction(NewEntryAction.OnDescriptionChanged(it)) },
                     placeholder = { Text(stringResource(R.string.add_description)) },
@@ -158,7 +162,6 @@ private fun NewEntryScreen(
                     )
                 )
             }
-            Spacer(Modifier.weight(1F))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -231,20 +234,22 @@ private fun NewEntryScreen(
             title = { Text(stringResource(R.string.are_you_sure)) },
             text = { Text(stringResource(R.string.do_you_want_to_go_back)) },
             confirmButton = {
-                Button(onClick = {
-                    onAction(NewEntryAction.CloseNavigationDialog)
-                    onAction(NewEntryAction.StopPlaying)
-                    onAction(NewEntryAction.NavigateBack)
-                    onAction(NewEntryAction.DeleteAudioFile(state.journalEntryUIState.audioPath))
-                }) {
-                    Text(stringResource(R.string.yes))
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = InverseOnSurface),
+                    onClick = {
+                        onAction(NewEntryAction.CloseNavigationDialog)
+                        onAction(NewEntryAction.StopPlaying)
+                        onAction(NewEntryAction.NavigateBack)
+                        onAction(NewEntryAction.DeleteAudioFile(state.journalEntryUIState.audioPath))
+                    }) {
+                    Text(color = Primary, text = stringResource(R.string.yes))
                 }
             },
             dismissButton = {
-                Button(onClick = {
+                Button(colors = ButtonDefaults.buttonColors(containerColor = PrimaryContainer), onClick = {
                     onAction(NewEntryAction.CloseNavigationDialog)
                 }) {
-                    Text(stringResource(R.string.no))
+                    Text(color = OnPrimary,text = stringResource(R.string.no))
                 }
             })
     }

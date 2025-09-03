@@ -29,6 +29,8 @@ import com.uesar.journal.ui.ObserveAsEvents
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
 import com.uesar.journal.ui.home.components.JournalEntryRow
 import com.uesar.journal.ui.home.components.NoEntries
+import com.uesar.journal.ui.theme.OnPrimary
+import com.uesar.journal.ui.theme.PrimaryContainer
 import com.uesar.journal.ui.theme.smallPadding
 import com.uesar.journal.ui.theme.standardPadding
 import kotlinx.coroutines.launch
@@ -82,7 +84,8 @@ private fun HomeScreen(
             }
         })
     }, floatingActionButton = {
-        FloatingActionButton(onClick = {
+        FloatingActionButton(containerColor = PrimaryContainer, contentColor = OnPrimary
+            , onClick = {
             onAction(HomeAction.BottomSheetOpened)
             onAction(HomeAction.StartRecording)
         }) {
