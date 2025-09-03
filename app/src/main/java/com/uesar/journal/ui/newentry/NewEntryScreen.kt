@@ -2,11 +2,9 @@ package com.uesar.journal.ui.newentry
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -134,34 +130,14 @@ private fun NewEntryScreen(
                 )
             }
 
-            Row {
-                AudioPlayerUI(
-                    modifier = Modifier
-                        .weight(1F)
-                        .padding(end = standardPadding),
-                    startPlaying = { onAction(NewEntryAction.StartPlaying) },
-                    resumePlaying = { onAction(NewEntryAction.ResumePlaying) },
-                    pausePlaying = { onAction(NewEntryAction.PausePlaying) },
-                    currentTime = state.journalEntryUIState.currentTime,
-                    totalTime = state.journalEntryUIState.totalTime,
-                    playerState = state.journalEntryUIState.playerState
-                )
-                Box(
-                    modifier = Modifier
-                        .size(56.dp)
-                        .shadow(elevation = 10.dp, shape = CircleShape)
-                        .background(Color.White, CircleShape)
-                        .clickable { onAction(NewEntryAction.OnAITranscribeButtonClicked) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(R.drawable.ai),
-                        contentDescription = null,
-                        tint = Color.Black
-                    )
-                }
-            }
+            AudioPlayerUI(
+                startPlaying = { onAction(NewEntryAction.StartPlaying) },
+                resumePlaying = { onAction(NewEntryAction.ResumePlaying) },
+                pausePlaying = { onAction(NewEntryAction.PausePlaying) },
+                currentTime = state.journalEntryUIState.currentTime,
+                totalTime = state.journalEntryUIState.totalTime,
+                playerState = state.journalEntryUIState.playerState
+            )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
