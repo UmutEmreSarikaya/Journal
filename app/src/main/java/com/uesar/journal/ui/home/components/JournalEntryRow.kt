@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.uesar.journal.R
 import com.uesar.journal.domain.mood.moods
 import com.uesar.journal.ui.PlayerState
 import com.uesar.journal.ui.components.AudioPlayerUI
@@ -45,7 +44,12 @@ fun JournalEntryRow(
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(modifier = modifier) {
-        Image(painter = painterResource(R.drawable.excited), contentDescription = null)
+        journalEntry.mood?.icon?.let { iconRes ->
+            Image(
+                painter = painterResource(id = iconRes),
+                contentDescription = journalEntry.mood.name
+            )
+        }
         Card(
             modifier = Modifier.padding(start = standardPadding),
             colors = CardDefaults.cardColors(containerColor = Surface),
