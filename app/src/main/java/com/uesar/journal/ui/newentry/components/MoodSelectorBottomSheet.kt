@@ -60,7 +60,7 @@ fun MoodSelectorBottomSheet(
                         painter = painterResource(R.drawable.check),
                         contentDescription = null
                     )
-                    Text(stringResource(R.string.confirm))
+                    Text(color = OnPrimary, text = stringResource(R.string.confirm))
                 }
             }
         }
