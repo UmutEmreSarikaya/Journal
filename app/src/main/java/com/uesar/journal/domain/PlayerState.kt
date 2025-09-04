@@ -1,4 +1,4 @@
-package com.uesar.journal.ui
+package com.uesar.journal.domain
 
 sealed class PlayerState {
     object Idle : PlayerState()

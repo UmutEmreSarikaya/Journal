@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
-import com.uesar.journal.ui.PlayerState
+import com.uesar.journal.domain.PlayerState
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
