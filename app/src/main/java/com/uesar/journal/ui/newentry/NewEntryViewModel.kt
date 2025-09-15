@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.Date
 
 class NewEntryViewModel(
     private val repository: JournalRepository,
@@ -148,7 +149,7 @@ class NewEntryViewModel(
                             moodName = state.value.journalEntryUIState.mood?.name ?: "",
                             description = state.value.journalEntryUIState.description,
                             topics = state.value.journalEntryUIState.topics,
-                            date = state.value.journalEntryUIState.date
+                            date = Date()
                         )
                     )
                 }
