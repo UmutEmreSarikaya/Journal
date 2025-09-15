@@ -66,6 +66,7 @@ fun JournalEntryRow(
                     pausePlaying = {pausePlaying()},
                     currentTime = currentTime,
                     totalTime = totalTime,
+                    color = journalEntry.mood?.color ?: InverseOnSurface,
                     playerState = playerState
                 )
                 FlowRow(modifier = Modifier.fillMaxWidth()) {

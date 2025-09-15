@@ -135,6 +135,7 @@ private fun NewEntryScreen(
                 pausePlaying = { onAction(NewEntryAction.PausePlaying) },
                 currentTime = state.journalEntryUIState.currentTime,
                 totalTime = state.journalEntryUIState.totalTime,
+                color = state.journalEntryUIState.mood?.color ?: InverseOnSurface,
                 playerState = state.journalEntryUIState.playerState
             )
 

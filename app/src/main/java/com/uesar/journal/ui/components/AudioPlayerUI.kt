@@ -37,12 +37,13 @@ fun AudioPlayerUI(
     pausePlaying: () -> Unit,
     currentTime: Int,
     totalTime: Int,
+    color: Color = InverseOnSurface,
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(
         modifier = modifier
             .height(56.dp)
-            .background(InverseOnSurface, shape = RoundedCornerShape(999.dp)),
+            .background(color, shape = RoundedCornerShape(999.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
