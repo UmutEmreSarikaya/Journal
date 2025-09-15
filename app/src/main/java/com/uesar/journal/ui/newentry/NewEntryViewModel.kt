@@ -145,7 +145,7 @@ class NewEntryViewModel(
                         JournalEntry(
                             title = state.value.journalEntryUIState.title,
                             audioPath = state.value.journalEntryUIState.audioPath,
-                            mood = state.value.journalEntryUIState.mood!!,
+                            moodName = state.value.journalEntryUIState.mood?.name ?: "",
                             description = state.value.journalEntryUIState.description,
                             topics = state.value.journalEntryUIState.topics,
                             date = state.value.journalEntryUIState.date

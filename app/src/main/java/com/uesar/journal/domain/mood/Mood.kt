@@ -2,13 +2,11 @@ package com.uesar.journal.domain.mood
 
 import androidx.annotation.DrawableRes
 import com.uesar.journal.R
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class Mood(
-    @DrawableRes val icon: Int,
-    @DrawableRes val emptyIcon: Int,
     val name: String
+    @param:DrawableRes val icon: Int,
+    @param:DrawableRes val emptyIcon: Int,
 )
 
 val moods = listOf(
