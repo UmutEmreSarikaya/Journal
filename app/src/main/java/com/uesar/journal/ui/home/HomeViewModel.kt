@@ -1,6 +1,5 @@
 package com.uesar.journal.ui.home
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.uesar.journal.domain.player.AudioPlayer
@@ -24,7 +23,6 @@ import java.util.Locale
 class HomeViewModel(
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
-    private val application: Application,
     repository: JournalRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeState())
@@ -84,7 +82,7 @@ class HomeViewModel(
 
             HomeAction.StartRecording -> {
                 _state.update { it.copy(isRecording = true) }
-                audioRecorder.startRecording(application = application)
+                audioRecorder.startRecording()
             }
 
             HomeAction.PauseRecording -> {
@@ -106,7 +104,7 @@ class HomeViewModel(
                 _state.update { it.copy(isRecording = false) }
                 audioRecorder.stopRecording()
                 audioPlayer.stopPlayback()
-                eventChannel.trySend(AudioRecorded("${application.cacheDir.absolutePath}/${audioRecorder.outputFile?.name}"))
+                eventChannel.trySend(AudioRecorded(audioRecorder.outputFile?.path ?: ""))
             }
 
             is HomeAction.StartPlaying -> {

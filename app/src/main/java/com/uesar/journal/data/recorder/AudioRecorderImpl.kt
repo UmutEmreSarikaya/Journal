@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class AudioRecorderImpl : AudioRecorder {
+
+class AudioRecorderImpl(private val application: Application) : AudioRecorder {
     private var mediaRecorder: MediaRecorder? = null
     override var outputFile: File? = null
     private var durationJob: Job? = null
@@ -24,7 +25,7 @@ class AudioRecorderImpl : AudioRecorder {
     override val recordingTime = _recordingTime.asStateFlow()
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
-    override fun startRecording(application: Application) {
+    override fun startRecording() {
         outputFile = File(application.cacheDir, "audio_${System.currentTimeMillis()}.mp3")
 
         mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
