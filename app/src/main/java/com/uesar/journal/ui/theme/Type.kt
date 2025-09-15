@@ -28,44 +28,37 @@ val Typography = Typography(
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        color = NeutralVariant10
     ),
     labelLarge = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
-        color = NeutralVariant10
     ),
     bodySmall = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 13.sp,
-        color = NeutralVariant10
     ),
     bodyMedium = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        color = NeutralVariant10,
         lineHeight = 20.sp,
     ),
     bodyLarge = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        color = NeutralVariant10
     ),
     titleSmall = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
-        color = NeutralVariant10
     ),
     titleMedium = TextStyle(
         fontFamily = Inter,
         fontWeight = FontWeight.Medium,
         fontSize = 26.sp,
-        color = NeutralVariant10
     ),
     headlineLarge = TextStyle(
         fontFamily = Inter,
