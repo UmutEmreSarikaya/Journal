@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
@@ -42,7 +43,7 @@ fun AudioRecordingBottomSheet(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(if (isRecording) "Recording your memories..." else "Recording Paused")
+        Text(if (isRecording) stringResource(R.string.recording_your_memories) else stringResource(R.string.recording_paused))
         Text(timePassed)
         Row(
             horizontalArrangement = Arrangement.spacedBy(71.dp, Alignment.CenterHorizontally),
