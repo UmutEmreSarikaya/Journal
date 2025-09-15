@@ -18,4 +18,6 @@
     <string name="do_you_want_to_go_back">Do you want to go back? Unsaved changes may be lost.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="recording_your_memories">Recording your memories…</string>
+    <string name="recording_paused">Recording Paused</string>
 </resources>
