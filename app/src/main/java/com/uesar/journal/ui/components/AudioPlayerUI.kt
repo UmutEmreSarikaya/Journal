@@ -27,7 +27,7 @@ import com.uesar.journal.domain.PlayerState
 import com.uesar.journal.ui.theme.InverseOnSurface
 import com.uesar.journal.ui.theme.JournalTheme
 import com.uesar.journal.ui.theme.standardPadding
-import com.uesar.journal.ui.utils.formatSecondsToMinutes
+import com.uesar.journal.ui.utils.Utils.formatSecondsToMinutes
 
 @Composable
 fun AudioPlayerUI(
