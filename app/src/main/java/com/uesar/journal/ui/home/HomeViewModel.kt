@@ -144,6 +144,29 @@ class HomeViewModel(
                 // No implementation here
             }
 
+            HomeAction.FilterChipClicked -> {
+                _state.update { state -> state.copy(isFilterPopupOpen = !state.isFilterPopupOpen)  }
+            }
+
+            HomeAction.DismissFilterPopup -> {
+                _state.update { state -> state.copy(isFilterPopupOpen = false)  }
+            }
+
+            is HomeAction.FilterItemClicked -> {
+                if (_state.value.filterList.contains(action.itemName)) {
+                    _state.update { state ->
+                        state.copy(
+                            filterList = state.filterList - action.itemName
+                        )
+                    }
+                } else {
+                    _state.update { state ->
+                        state.copy(
+                            filterList = state.filterList + action.itemName
+                        )
+                    }
+                }
+            }
         }
     }
 
