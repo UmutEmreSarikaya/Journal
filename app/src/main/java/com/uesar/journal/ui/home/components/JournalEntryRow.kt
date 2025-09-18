@@ -59,17 +59,17 @@ fun JournalEntryRow(
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(modifier = modifier) {
-        var cardHeight by remember { mutableIntStateOf(0) } // store card height in px
+        var cardHeight by remember { mutableIntStateOf(0) }
         Box(
             modifier = Modifier
                 .padding(end = standardPadding)
-                .width(40.dp) // enough space for icon + line
+                .width(40.dp)
         ) {
             if (!isLastEntryInGroup) {
                 Canvas(
                     modifier = Modifier
                         .matchParentSize()
-                        .padding(top = 20.dp) // start just below the icon
+                        .padding(top = 20.dp)
                 ) {
                     drawLine(
                         color = Color.Gray,
