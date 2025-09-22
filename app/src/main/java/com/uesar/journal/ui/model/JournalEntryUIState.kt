@@ -14,5 +14,6 @@ data class JournalEntryUIState (
     val audioPath: String = "",
     val playerState: PlayerState = PlayerState.Idle,
     val totalTime: Int = -1,
-    val currentTime: Int = -1
+    val currentTime: Int = -1,
+    val isShown: Boolean = true
 )

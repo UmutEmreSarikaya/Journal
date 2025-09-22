@@ -2,11 +2,12 @@ package com.uesar.journal.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.uesar.journal.domain.JournalRepository
 import com.uesar.journal.domain.player.AudioPlayer
 import com.uesar.journal.domain.recorder.AudioRecorder
-import com.uesar.journal.domain.JournalRepository
-import com.uesar.journal.ui.home.HomeEvent.*
+import com.uesar.journal.ui.home.HomeEvent.AudioRecorded
 import com.uesar.journal.ui.model.mapper.toUIState
+import com.uesar.journal.ui.utils.Utils.formatCounter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.Locale
 
 class HomeViewModel(
     private val audioRecorder: AudioRecorder,
@@ -31,14 +31,17 @@ class HomeViewModel(
     val events = eventChannel.receiveAsFlow()
     private var positionJob: Job? = null
 
-
     init {
         audioRecorder.recordingTime.onEach { recordingTime ->
             _state.update { it.copy(recordingTime = formatCounter(recordingTime)) }
         }.launchIn(viewModelScope)
 
         repository.getJournalEntries().onEach { entries ->
-            _state.update { it.copy(journalEntries = entries.map { it.toUIState() }) }
+            _state.update { state ->
+                state.copy(
+                    journalEntries = entries.map { it.toUIState() }
+                )
+            }
             _state.update { state ->
                 state.copy(
                     journalEntries = state.journalEntries.mapIndexed { index, journalEntry ->
@@ -145,35 +148,48 @@ class HomeViewModel(
             }
 
             HomeAction.FilterChipClicked -> {
-                _state.update { state -> state.copy(isFilterPopupOpen = !state.isFilterPopupOpen)  }
+                _state.update { state -> state.copy(isFilterPopupOpen = !state.isFilterPopupOpen) }
             }
 
             HomeAction.DismissFilterPopup -> {
-                _state.update { state -> state.copy(isFilterPopupOpen = false)  }
+                _state.update { state -> state.copy(isFilterPopupOpen = false) }
             }
 
             is HomeAction.FilterItemClicked -> {
-                if (_state.value.filterList.contains(action.itemName)) {
+                if (_state.value.selectedFilters.contains(action.itemName)) {
                     _state.update { state ->
                         state.copy(
-                            filterList = state.filterList - action.itemName
+                            selectedFilters = state.selectedFilters - action.itemName
                         )
                     }
                 } else {
                     _state.update { state ->
                         state.copy(
-                            filterList = state.filterList + action.itemName
+                            selectedFilters = state.selectedFilters + action.itemName
                         )
                     }
+                }
+                _state.update { state ->
+                    state.copy(
+                        journalEntries = state.journalEntries.map { entry ->
+                            val shouldShow = state.selectedFilters.isEmpty() ||
+                                    state.selectedFilters.contains(entry.mood?.name)
+                            entry.copy(isShown = shouldShow)
+                        }
+                    )
+                }
+            }
+
+            HomeAction.ClearFilter -> {
+                _state.update { state ->
+                    state.copy(
+                        selectedFilters = emptyList(),
+                        journalEntries = state.journalEntries.map { entry ->
+                            entry.copy(isShown = true)
+                        }
+                    )
                 }
             }
         }
     }
-
-    private fun formatCounter(counterInMillis: Long): String {
-        val totalSeconds = counterInMillis / 1000
-        val minutes = (totalSeconds % 3600) / 60
-        val seconds = totalSeconds % 60
-        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-    }
-} 
+}

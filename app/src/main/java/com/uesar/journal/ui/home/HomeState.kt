@@ -8,5 +8,5 @@ data class HomeState(
     val isRecording: Boolean = false,
     val recordingTime: String = "00:00:00",
     val isFilterPopupOpen: Boolean = false,
-    val filterList: List<String> = emptyList()
+    val selectedFilters: List<String> = emptyList()
 )

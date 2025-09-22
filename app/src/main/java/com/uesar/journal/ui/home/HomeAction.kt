@@ -15,5 +15,6 @@ sealed interface HomeAction {
     data object PausePlaying : HomeAction
     data object FilterChipClicked : HomeAction
     data object DismissFilterPopup : HomeAction
+    data object ClearFilter : HomeAction
     data class FilterItemClicked(val itemName: String) : HomeAction
 }

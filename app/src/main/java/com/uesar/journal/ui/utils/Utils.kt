@@ -54,4 +54,19 @@ object Utils {
             .sortedByDescending { it.date } // newest first
             .groupBy { formatRecordedDate(it.date.time) }
     }
+
+    fun formatFilterList(list: List<String>): String {
+        return when {
+            list.isEmpty() -> ""
+            list.size <= 2 -> list.joinToString(", ")
+            else -> list.take(2).joinToString(", ") + " +${list.size - 2}"
+        }
+    }
+
+    fun formatCounter(counterInMillis: Long): String {
+        val totalSeconds = counterInMillis / 1000
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+    }
 }
