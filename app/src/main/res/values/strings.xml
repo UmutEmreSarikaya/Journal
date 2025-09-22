@@ -20,4 +20,6 @@
     <string name="no">No</string>
     <string name="recording_your_memories">Recording your memories…</string>
     <string name="recording_paused">Recording Paused</string>
+    <string name="all_moods">All Moods</string>
+    <string name="close">" Close"</string>
 </resources>
