@@ -24,8 +24,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uesar.journal.R
 import com.uesar.journal.domain.PlayerState
-import com.uesar.journal.ui.theme.InverseOnSurface
+import com.uesar.journal.domain.mood.Mood
+import com.uesar.journal.ui.theme.Excited25
+import com.uesar.journal.ui.theme.Excited80
 import com.uesar.journal.ui.theme.JournalTheme
+import com.uesar.journal.ui.theme.Neutral25
+import com.uesar.journal.ui.theme.Neutral80
+import com.uesar.journal.ui.theme.Peaceful25
+import com.uesar.journal.ui.theme.Peaceful80
+import com.uesar.journal.ui.theme.Sad25
+import com.uesar.journal.ui.theme.Sad80
+import com.uesar.journal.ui.theme.Stressed25
+import com.uesar.journal.ui.theme.Stressed80
 import com.uesar.journal.ui.theme.standardPadding
 import com.uesar.journal.ui.utils.Utils.formatSecondsToMinutes
 
@@ -37,13 +47,13 @@ fun AudioPlayerUI(
     pausePlaying: () -> Unit,
     currentTime: Int,
     totalTime: Int,
-    color: Color = InverseOnSurface,
+    mood: Mood? = null,
     playerState: PlayerState = PlayerState.Idle
 ) {
     Row(
         modifier = modifier
             .height(56.dp)
-            .background(color, shape = RoundedCornerShape(999.dp)),
+            .background(color = getBackgroundColorFromMood(mood), shape = RoundedCornerShape(999.dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -68,13 +78,17 @@ fun AudioPlayerUI(
                     else R.drawable.play_arrow_filled
                 ),
                 contentDescription = null,
-                tint = Color.Black
+                tint = getColorFromMood(mood)
             )
         }
         LinearProgressIndicator(
-        progress = { currentTime.toFloat() / totalTime.toFloat() },
-        modifier = Modifier.padding(horizontal = standardPadding).weight(1F),
-        strokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap,
+            progress = { currentTime.toFloat() / totalTime.toFloat() },
+            modifier = Modifier
+                .padding(horizontal = standardPadding)
+                .weight(1F),
+            strokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap,
+            trackColor = getColorFromMood(mood),
+            color = getColorFromMood(mood)
         )
         Text(
             modifier = Modifier.padding(end = standardPadding),
@@ -82,6 +96,24 @@ fun AudioPlayerUI(
             style = MaterialTheme.typography.bodySmall
         )
     }
+}
+
+private fun getBackgroundColorFromMood(mood: Mood?) = when (mood?.name) {
+    "Sad" -> Sad25
+    "Neutral" -> Neutral25
+    "Peaceful" -> Peaceful25
+    "Excited" -> Excited25
+    "Stress" -> Stressed25
+    else -> Color.Unspecified
+}
+
+private fun getColorFromMood(mood: Mood?) = when (mood?.name) {
+    "Sad" -> Sad80
+    "Neutral" -> Neutral80
+    "Peaceful" -> Peaceful80
+    "Excited" -> Excited80
+    "Stress" -> Stressed80
+    else -> Color.Unspecified
 }
 
 @Preview
