@@ -116,7 +116,7 @@ fun JournalEntryRow(
                     pausePlaying = pausePlaying,
                     currentTime = currentTime,
                     totalTime = totalTime,
-                    color = journalEntry.mood?.color ?: InverseOnSurface,
+                    mood = journalEntry.mood,
                     playerState = playerState
                 )
 
