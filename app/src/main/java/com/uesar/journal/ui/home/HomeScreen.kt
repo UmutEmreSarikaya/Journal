@@ -1,12 +1,15 @@
 package com.uesar.journal.ui.home
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,18 +22,20 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.uesar.journal.R
 import com.uesar.journal.ui.ObserveAsEvents
 import com.uesar.journal.ui.home.components.AudioRecordingBottomSheet
+import com.uesar.journal.ui.home.components.FilterPopup
 import com.uesar.journal.ui.home.components.JournalEntryRow
 import com.uesar.journal.ui.home.components.NoEntries
+import com.uesar.journal.ui.home.components.SelectedFilterRow
 import com.uesar.journal.ui.theme.OnPrimary
 import com.uesar.journal.ui.theme.PrimaryContainer
 import com.uesar.journal.ui.theme.smallPadding
@@ -104,74 +109,91 @@ private fun HomeScreen(
                 .padding(innerPadding)
                 .padding(horizontal = standardPadding)
                 .fillMaxSize(),
-            verticalArrangement = if (state.journalEntries.isEmpty()) Arrangement.Center else Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalArrangement = if (state.journalEntries.none { it.isShown }) Arrangement.Center else Arrangement.Top,
         ) {
-            if (state.journalEntries.isEmpty()) {
-                NoEntries()
+            FilterChip(
+                modifier = Modifier
+                    .height(32.dp)
+                    .animateContentSize(),
+                selected = false,
+                onClick = { onAction(HomeAction.FilterChipClicked) },
+                label = {
+                    SelectedFilterRow(state.selectedFilters, { onAction(HomeAction.ClearFilter) })
+                })
+            if (state.isFilterPopupOpen) {
+                FilterPopup(
+                    onDismissRequest = { onAction(HomeAction.DismissFilterPopup) },
+                    onItemClicked = { onAction(HomeAction.FilterItemClicked(it)) },
+                    filterList = state.selectedFilters
+                )
+            }
+            if (state.journalEntries.none { it.isShown }) {
+                NoEntries(modifier = Modifier.fillMaxSize())
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    groupEntriesByDate(state.journalEntries).forEach { (dateTitle, entriesForDate) ->
+                LazyColumn(modifier = Modifier.fillMaxSize().padding(top = smallPadding)) {
+                    groupEntriesByDate(state.journalEntries.filter { it.isShown }).forEach { (dateTitle, entriesForDate) ->
                         item {
                             Text(
                                 text = dateTitle,
-                                style = MaterialTheme.typography.titleMedium,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontSize = 18.sp,
                                 modifier = Modifier.padding(vertical = 4.dp)
                             )
                         }
 
                         itemsIndexed(entriesForDate) { index, entry ->
-                            Column {
-                                JournalEntryRow(
-                                    modifier = Modifier.padding(vertical = smallPadding),
-                                    journalEntry = entry,
-                                    isLastEntryInGroup = entriesForDate.lastIndex == index,
-                                    startPlaying = { onAction(HomeAction.StartPlaying(entry.audioPath)) },
-                                    resumePlaying = { onAction(HomeAction.ResumePlaying) },
-                                    pausePlaying = { onAction(HomeAction.PausePlaying) },
-                                    currentTime = entry.currentTime,
-                                    totalTime = entry.totalTime,
-                                    playerState = entry.playerState
-                                )
+                            Column(modifier = Modifier.padding(top = smallPadding)) {
+                                if (entry.isShown) {
+                                    JournalEntryRow(
+                                        modifier = Modifier.padding(vertical = smallPadding),
+                                        journalEntry = entry,
+                                        isLastEntryInGroup = entriesForDate.lastIndex == index,
+                                        startPlaying = { onAction(HomeAction.StartPlaying(entry.audioPath)) },
+                                        resumePlaying = { onAction(HomeAction.ResumePlaying) },
+                                        pausePlaying = { onAction(HomeAction.PausePlaying) },
+                                        currentTime = entry.currentTime,
+                                        totalTime = entry.totalTime,
+                                        playerState = entry.playerState
+                                    )
+                                }
                             }
-
                         }
                     }
                 }
             }
-        }
-        if (state.isBottomSheetOpen) {
-            ModalBottomSheet(
-                sheetState = sheetState,
-                onDismissRequest = {
-                    onAction(HomeAction.BottomSheetClosed)
-                    onAction(HomeAction.CancelRecording)
-                }) {
-                AudioRecordingBottomSheet(
-                    timePassed = state.recordingTime,
-                    isRecording = state.isRecording,
-                    onResumeButtonClicked = { onAction(HomeAction.ResumeRecording) },
-                    onCancelButtonClicked = {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                            onAction(HomeAction.BottomSheetClosed)
-                            onAction(HomeAction.CancelRecording)
+
+            if (state.isBottomSheetOpen) {
+                ModalBottomSheet(
+                    sheetState = sheetState,
+                    onDismissRequest = {
+                        onAction(HomeAction.BottomSheetClosed)
+                        onAction(HomeAction.CancelRecording)
+                    }) {
+                    AudioRecordingBottomSheet(
+                        timePassed = state.recordingTime,
+                        isRecording = state.isRecording,
+                        onResumeButtonClicked = { onAction(HomeAction.ResumeRecording) },
+                        onCancelButtonClicked = {
+                            coroutineScope.launch {
+                                sheetState.hide()
+                                onAction(HomeAction.BottomSheetClosed)
+                                onAction(HomeAction.CancelRecording)
+                            }
+                        },
+                        onPauseButtonClicked = { onAction(HomeAction.PauseRecording) },
+                        onSaveButtonClicked = {
+                            coroutineScope.launch {
+                                sheetState.hide()
+                                onAction(HomeAction.BottomSheetClosed)
+                                onAction(HomeAction.SaveRecording)
+                            }
                         }
-                    },
-                    onPauseButtonClicked = { onAction(HomeAction.PauseRecording) },
-                    onSaveButtonClicked = {
-                        coroutineScope.launch {
-                            sheetState.hide()
-                            onAction(HomeAction.BottomSheetClosed)
-                            onAction(HomeAction.SaveRecording)
-                        }
-                    }
-                )
+                    )
+                }
             }
         }
     }
 }
-
 
 
 @Preview
